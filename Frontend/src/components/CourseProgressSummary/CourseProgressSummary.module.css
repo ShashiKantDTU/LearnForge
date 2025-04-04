@@ -1,0 +1,247 @@
+.progressSummary {
+    background-color: var(--var-surface, #ffffff);
+    border-radius: 12px;
+    box-shadow: var(--var-shadow-sm, 0 2px 5px rgba(0, 0, 0, 0.1));
+    padding: 20px;
+    margin-bottom: 30px;
+    max-width: 100%;
+    box-sizing: border-box;
+    color: var(--var-text, #333);
+}
+
+.progressSummary h3 {
+    font-size: 1.2rem;
+    margin: 0 0 15px 0;
+    color: var(--var-text-secondary, #444);
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* Overall progress section */
+.overallProgress {
+    margin-bottom: 20px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--var-divider, #eee);
+}
+
+.stat {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+    font-size: 0.95rem;
+}
+
+.statIcon {
+    color: var(--var-primary, #4a6cf7);
+    margin-right: 10px;
+    font-size: 1.1rem;
+}
+
+.statLabel {
+    flex: 1;
+    color: var(--var-text-secondary, #666);
+}
+
+.statValue {
+    font-weight: 600;
+    color: var(--var-text, #333);
+}
+
+/* Recent courses section */
+.recentCourses {
+    margin-bottom: 20px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--var-divider, #eee);
+}
+
+.courseList {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.courseItem {
+    margin-bottom: 15px;
+    transition: transform 0.2s ease;
+}
+
+.courseItem a {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+    padding: 12px 15px;
+    border-radius: 8px;
+    background-color: var(--var-surface-2, #f5f7fa);
+    transition: all 0.2s ease;
+}
+
+.courseItem a:hover {
+    background-color: var(--var-surface-hover, #ebeff5);
+    transform: translateY(-2px);
+    box-shadow: var(--var-shadow-sm, 0 3px 8px rgba(0, 0, 0, 0.05));
+}
+
+.courseTitle {
+    font-weight: 600;
+    margin-bottom: 10px;
+    color: var(--var-text, #333);
+    font-size: 1rem;
+}
+
+.courseDetails {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    font-size: 0.85rem;
+}
+
+.lastAccessed {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    color: var(--var-text-secondary, #666);
+}
+
+.courseProgressBar {
+    flex: 1;
+    height: 6px;
+    background-color: var(--var-surface-3, #ddd);
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+.courseProgressFill {
+    height: 100%;
+    background-color: var(--var-success, #28a745);
+    transition: width 0.3s ease;
+}
+
+.progressPercentage {
+    min-width: 40px;
+    text-align: right;
+    font-weight: 600;
+    color: var(--var-text-secondary, #666);
+}
+
+/* Bookmarked courses section */
+.bookmarkedCourses {
+    margin-bottom: 10px;
+}
+
+.bookmarkList {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.bookmarkItem {
+    background-color: var(--var-surface-2, #f5f7fa);
+    border-radius: 20px;
+    transition: all 0.2s ease;
+}
+
+.bookmarkItem a {
+    display: block;
+    padding: 8px 15px;
+    text-decoration: none;
+    color: var(--var-text-secondary, #666);
+    font-size: 0.85rem;
+    transition: color 0.2s ease;
+}
+
+.bookmarkItem:hover {
+    background-color: var(--var-primary-light, #ebeffe);
+}
+
+.bookmarkItem:hover a {
+    color: var(--var-primary, #4a6cf7);
+}
+
+/* No courses view */
+.noCourses {
+    text-align: center;
+    padding: 30px 20px;
+    background-color: var(--var-surface-2, #f5f7fa);
+    border-radius: 12px;
+    color: var(--var-text-secondary, #666);
+}
+
+.noCourses .icon {
+    font-size: 2.5rem;
+    margin-bottom: 15px;
+    color: var(--var-primary, #4a6cf7);
+    opacity: 0.7;
+}
+
+.noCourses p {
+    margin-bottom: 20px;
+    font-size: 1rem;
+}
+
+.exploreCourses, .viewAllCourses {
+    display: inline-block;
+    text-decoration: none;
+    background-color: var(--var-primary, #4a6cf7);
+    color: white;
+    padding: 8px 16px;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+
+.exploreCourses:hover, .viewAllCourses:hover {
+    background-color: var(--var-primary-dark, #3a5cd7);
+    transform: translateY(-2px);
+    box-shadow: var(--var-shadow-sm, 0 3px 10px rgba(74, 108, 247, 0.2));
+}
+
+.viewAllCourses {
+    display: block;
+    text-align: center;
+    margin-top: 15px;
+    background-color: transparent;
+    color: var(--var-primary, #4a6cf7);
+    border: 1px solid var(--var-primary, #4a6cf7);
+}
+
+.viewAllCourses:hover {
+    background-color: var(--var-primary-light, #ebeffe);
+    color: var(--var-primary, #4a6cf7);
+}
+
+/* Loading state */
+.loading {
+    padding: 20px;
+    text-align: center;
+    color: var(--var-text-secondary, #666);
+    font-style: italic;
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+    .courseDetails {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 5px;
+    }
+    
+    .courseProgressBar {
+        width: 100%;
+        margin: 5px 0;
+    }
+    
+    .bookmarkList {
+        flex-direction: column;
+    }
+    
+    .bookmarkItem {
+        width: 100%;
+    }
+} 

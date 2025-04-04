@@ -1,0 +1,325 @@
+import React, { useState, useEffect, useRef, useCallback } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
+import styles from './LearningPage.module.css';
+import Header from '../../components/header/Header';
+
+// Import components
+import CourseHeader from './components/CourseHeader';
+import CourseSidebar from './components/CourseSidebar';
+import ContentNavigation from './components/ContentNavigation';
+import ContentRenderer from './components/ContentRenderer';
+import CourseProgress from './components/CourseProgress';
+import { FullPageLoading, SectionLoading, ErrorMessage } from './components/LoadingStates';
+
+// Import mock data for development
+import { mockCourseData, delay } from './mockData';
+
+// Utility function to safely process markdown content
+const processMarkdownContent = (markdown) => {
+    if (!markdown) return '';
+    
+    // Count backticks to ensure code blocks are properly closed
+    const openCodeBlocks = (markdown.match(/```/g) || []).length;
+    if (openCodeBlocks % 2 !== 0) {
+        // If there's an odd number of code block markers, add a closing one
+        return markdown + '\n```\n';
+    }
+    
+    return markdown;
+};
+
+const LearningPage = () => {
+    const { courseName, sectionId = 1 } = useParams();
+    const navigate = useNavigate();
+    const contentRef = useRef(null);
+    
+    // State management
+    const [course, setCourse] = useState(null);
+    const [loading, setLoading] = useState(true);
+    const [sectionLoading, setSectionLoading] = useState(true);
+    const [error, setError] = useState(null);
+    const [sectionContent, setSectionContent] = useState('');
+    const [sectionError, setSectionError] = useState(null);
+    const [bookmarked, setBookmarked] = useState(false);
+    const [activeHeadings, setActiveHeadings] = useState([]);
+    const [mobileNavOpen, setMobileNavOpen] = useState(false);
+    const [progressData, setProgressData] = useState({ completed: [], lastViewed: null });
+    
+    // Toggle mobile navigation
+    const toggleMobileNav = () => setMobileNavOpen(!mobileNavOpen);
+    
+    // Fetch course data
+    useEffect(() => {
+        const loadCourseData = async () => {
+            setLoading(true);
+            setError(null);
+            
+            try {
+                // In development, use mock data
+                // In production, this would be an API call
+                await delay(800); // Simulate network delay
+                const courseData = mockCourseData;
+                setCourse(courseData);
+                
+                // Check if course is bookmarked
+                const bookmarkedCourses = JSON.parse(localStorage.getItem('bookmarkedCourses') || '[]');
+                setBookmarked(bookmarkedCourses.includes(courseName));
+                
+                // Load progress data
+                const savedProgressKey = `course_progress_${courseName}`;
+                const savedProgress = JSON.parse(localStorage.getItem(savedProgressKey) || '{"completed":[],"lastViewed":null}');
+                setProgressData(savedProgress);
+                
+                setLoading(false);
+            } catch (err) {
+                console.error('Failed to load course:', err);
+                setError('Failed to load course data. Please try again.');
+                setLoading(false);
+            }
+        };
+        
+        loadCourseData();
+    }, [courseName]);
+    
+    // Fetch section content
+    useEffect(() => {
+        const fetchSectionContent = async () => {
+            if (!course) return;
+            
+            setSectionLoading(true);
+            setSectionError(null);
+            
+            try {
+                // In development, use mock data with timeout
+                // In production, this would fetch from API
+                await delay(600);
+                
+                // Find current section in learning_path
+                const currentSection = course.learning_path.find(
+                    section => section.section === parseInt(sectionId)
+                );
+                
+                if (!currentSection) {
+                    throw new Error('Section not found');
+                }
+                
+                // Check if content exists in generated_content
+                const existingContent = course.generated_content && course.generated_content.length > 0
+                    ? course.generated_content.find(content => content.section === parseInt(sectionId))
+                    : null;
+                
+                if (existingContent && existingContent.content) {
+                    const processedContent = processMarkdownContent(existingContent.content);
+                    setSectionContent(processedContent);
+                } else {
+                    // In development, use mock content if not found
+                    const mockContent = `
+# ${currentSection.topic_name}
+
+This is mock content for section ${sectionId}. In production, this would be fetched from the API.
+
+## Key Concepts
+
+${currentSection.key_concepts.map(concept => `- ${concept}`).join('\n')}
+
+## Practice Exercise
+
+${currentSection.practice}
+`;
+                    setSectionContent(mockContent);
+                }
+                
+                // Update last viewed section in progress
+                const updatedProgress = { 
+                    ...progressData, 
+                    lastViewed: parseInt(sectionId) 
+                };
+                setProgressData(updatedProgress);
+                localStorage.setItem(
+                    `course_progress_${courseName}`, 
+                    JSON.stringify(updatedProgress)
+                );
+                
+                setSectionLoading(false);
+            } catch (err) {
+                console.error('Failed to load section content:', err);
+                setSectionError(`Failed to load section content: ${err.message}`);
+                setSectionLoading(false);
+            }
+        };
+        
+        fetchSectionContent();
+    }, [course, sectionId, courseName, progressData]);
+    
+    // Function to handle scrolling to headings
+    const scrollToHeading = (heading) => {
+        if (!contentRef.current) return;
+        
+        const headingId = heading.toLowerCase().replace(/\s+/g, '-');
+        const headingElement = document.getElementById(headingId);
+        
+        if (headingElement) {
+            headingElement.scrollIntoView({ behavior: 'smooth' });
+            headingElement.focus();
+        }
+    };
+    
+    // Handle bookmarking the course
+    const toggleBookmark = () => {
+        const bookmarkedCourses = JSON.parse(localStorage.getItem('bookmarkedCourses') || '[]');
+        
+        let updatedBookmarks;
+        if (bookmarked) {
+            updatedBookmarks = bookmarkedCourses.filter(course => course !== courseName);
+        } else {
+            updatedBookmarks = [...bookmarkedCourses, courseName];
+        }
+        
+        localStorage.setItem('bookmarkedCourses', JSON.stringify(updatedBookmarks));
+        setBookmarked(!bookmarked);
+    };
+    
+    // Handle sharing the course
+    const shareCourse = () => {
+        if (navigator.share) {
+            navigator.share({
+                title: `Learning ${courseName}`,
+                text: `Check out this course on LearnForge: ${courseName}`,
+                url: window.location.href,
+            }).catch(err => console.error('Failed to share:', err));
+        } else {
+            // Fallback: copy link to clipboard
+            navigator.clipboard.writeText(window.location.href)
+                .then(() => alert('Link copied to clipboard!'))
+                .catch(err => console.error('Failed to copy:', err));
+        }
+    };
+    
+    // Mark section as complete
+    const markSectionComplete = (sectionId) => {
+        const updatedCompleted = [...progressData.completed];
+        
+        if (!updatedCompleted.includes(sectionId)) {
+            updatedCompleted.push(sectionId);
+        }
+        
+        const updatedProgress = { ...progressData, completed: updatedCompleted };
+        setProgressData(updatedProgress);
+        
+        localStorage.setItem(
+            `course_progress_${courseName}`, 
+            JSON.stringify(updatedProgress)
+        );
+    };
+    
+    // Update document title
+    useEffect(() => {
+        if (course) {
+            const currentSection = course.learning_path.find(
+                section => section.section === parseInt(sectionId)
+            );
+            
+            if (currentSection) {
+                document.title = `${currentSection.topic_name} | ${course.course_name} - LearnForge`;
+            } else {
+                document.title = `${course.course_name} - LearnForge`;
+            }
+        } else {
+            document.title = 'Learning - LearnForge';
+        }
+    }, [course, sectionId]);
+    
+    // If loading the entire course
+    if (loading) {
+        return (
+            <>
+                <Header />
+                <FullPageLoading />
+            </>
+        );
+    }
+    
+    // If there was an error loading the course
+    if (error && !course) {
+        return (
+            <>
+                <Header />
+                <ErrorMessage 
+                    message={error}
+                    retry={() => window.location.reload()}
+                />
+            </>
+        );
+    }
+    
+    return (
+        <>
+            <Header />
+            <div className={styles.MainContainer}>
+                {/* Course Header */}
+                <CourseHeader 
+                    courseName={courseName}
+                    bookmarked={bookmarked}
+                    toggleBookmark={toggleBookmark}
+                    shareCourse={shareCourse}
+                />
+                
+                <div className={styles.ContentContainer}>
+                    {/* Sidebar */}
+                    <CourseSidebar 
+                        course={course}
+                        courseName={courseName}
+                        sectionId={sectionId}
+                        progressData={progressData}
+                    />
+                    
+                    {/* Main Content Area */}
+                    <main className={styles.Content} ref={contentRef} aria-live="polite">
+                        {sectionLoading ? (
+                            <SectionLoading />
+                        ) : sectionError ? (
+                            <ErrorMessage 
+                                message={sectionError}
+                                retry={() => {
+                                    setSectionLoading(true);
+                                    window.location.reload();
+                                }}
+                            />
+                        ) : (
+                            <>
+                                {/* Course Progress */}
+                                <CourseProgress 
+                                    course={course}
+                                    progressData={progressData}
+                                    markSectionComplete={markSectionComplete}
+                                    sectionId={sectionId}
+                                />
+                                
+                                {/* Content */}
+                                <div className={styles.sectionContent}>
+                                    <ContentRenderer 
+                                        markdown={sectionContent}
+                                        onHeadingsExtracted={setActiveHeadings}
+                                    />
+                                </div>
+                                
+                                {/* Navigation */}
+                                <ContentNavigation 
+                                    course={course}
+                                    sectionId={sectionId}
+                                    courseName={courseName}
+                                    activeHeadings={activeHeadings}
+                                    scrollToHeading={scrollToHeading}
+                                    mobileNavOpen={mobileNavOpen}
+                                    toggleMobileNav={toggleMobileNav}
+                                />
+                            </>
+                        )}
+                    </main>
+                </div>
+            </div>
+        </>
+    );
+};
+
+export default LearningPage;

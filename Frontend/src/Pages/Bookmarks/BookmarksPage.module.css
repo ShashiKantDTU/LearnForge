@@ -1,0 +1,311 @@
+.bookmarksContainer {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 40px 20px;
+}
+
+.pageHeader {
+    margin-bottom: 40px;
+    text-align: center;
+}
+
+.pageTitle {
+    font-size: 2.5rem;
+    margin: 0 0 15px 0;
+    color: var(--var-text);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+}
+
+.titleIcon {
+    color: var(--var-primary);
+}
+
+.pageDescription {
+    font-size: 1.1rem;
+    max-width: 600px;
+    margin: 0 auto 30px;
+    color: var(--var-text-secondary);
+}
+
+.searchContainer {
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+.searchInputWrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.searchIcon {
+    position: absolute;
+    left: 15px;
+    color: var(--var-text-secondary);
+}
+
+.searchInput {
+    width: 100%;
+    padding: 12px 20px 12px 45px;
+    font-size: 1rem;
+    border: 1px solid var(--var-divider);
+    border-radius: 30px;
+    background-color: var(--var-surface);
+    color: var(--var-text);
+    transition: all 0.2s ease;
+}
+
+.searchInput:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(74, 108, 247, 0.2);
+    border-color: var(--var-primary);
+}
+
+.bookmarkCount {
+    text-align: left;
+    margin-bottom: 20px;
+    color: var(--var-text-secondary);
+    font-size: 0.95rem;
+}
+
+.courseGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 25px;
+}
+
+.courseCard {
+    background-color: var(--var-surface);
+    border-radius: 12px;
+    box-shadow: var(--var-shadow-sm);
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    text-decoration: none;
+    color: var(--var-text);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    border: 1px solid var(--var-divider);
+    height: 100%;
+}
+
+.courseCard:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--var-shadow-md);
+}
+
+.courseHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.courseField {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.85rem;
+    color: var(--var-text-secondary);
+    background-color: var(--var-surface-2);
+    padding: 6px 12px;
+    border-radius: 20px;
+}
+
+.removeBookmark {
+    background: none;
+    border: none;
+    color: var(--var-primary);
+    font-size: 1.1rem;
+    cursor: pointer;
+    padding: 5px;
+    transition: transform 0.2s ease;
+}
+
+.removeBookmark:hover {
+    transform: scale(1.1);
+}
+
+.courseTitle {
+    font-size: 1.3rem;
+    margin: 0 0 15px 0;
+    line-height: 1.3;
+    color: var(--var-text);
+}
+
+.courseDescription {
+    font-size: 0.95rem;
+    color: var(--var-text-secondary);
+    margin-bottom: 20px;
+    line-height: 1.5;
+    flex-grow: 1;
+}
+
+.progressContainer {
+    margin-bottom: 20px;
+}
+
+.progressBarOuter {
+    width: 100%;
+    height: 8px;
+    background-color: var(--var-surface-2);
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 5px;
+}
+
+.progressBarInner {
+    height: 100%;
+    background-color: var(--var-success, #28a745);
+    transition: width 0.3s ease;
+}
+
+.progressText {
+    font-size: 0.85rem;
+    color: var(--var-text-secondary);
+    display: block;
+    text-align: right;
+}
+
+.courseFooter {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid var(--var-divider);
+    padding-top: 15px;
+    margin-top: auto;
+}
+
+.courseLevel {
+    font-size: 0.85rem;
+    color: var(--var-text-secondary);
+    background-color: var(--var-surface-2);
+    padding: 4px 10px;
+    border-radius: 15px;
+}
+
+.continueButtonWrapper {
+    display: flex;
+    align-items: center;
+}
+
+.continueButton {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--var-primary);
+    font-size: 0.9rem;
+    font-weight: 500;
+    transition: transform 0.2s ease;
+}
+
+.arrowIcon {
+    transition: transform 0.2s ease;
+}
+
+.courseCard:hover .continueButton {
+    color: var(--var-primary-dark);
+}
+
+.courseCard:hover .arrowIcon {
+    transform: translateX(4px);
+}
+
+/* Empty state */
+.emptyState {
+    text-align: center;
+    padding: 60px 20px;
+    background-color: var(--var-surface-2);
+    border-radius: 12px;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.emptyIcon {
+    font-size: 4rem;
+    color: var(--var-text-secondary);
+    opacity: 0.7;
+    margin-bottom: 20px;
+}
+
+.emptyState h2 {
+    font-size: 1.8rem;
+    margin-bottom: 15px;
+    color: var(--var-text);
+}
+
+.emptyState p {
+    color: var(--var-text-secondary);
+    margin-bottom: 25px;
+    font-size: 1.1rem;
+    line-height: 1.5;
+}
+
+.exploreCourses {
+    display: inline-block;
+    background-color: var(--var-primary);
+    color: white;
+    text-decoration: none;
+    padding: 12px 25px;
+    border-radius: 8px;
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+
+.exploreCourses:hover {
+    background-color: var(--var-primary-dark);
+    transform: translateY(-2px);
+    box-shadow: var(--var-shadow-md);
+}
+
+/* Loading state */
+.loadingContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 300px;
+}
+
+.spinner {
+    border: 4px solid rgba(0, 0, 0, 0.1);
+    border-radius: 50%;
+    border-top: 4px solid var(--var-primary);
+    width: 40px;
+    height: 40px;
+    animation: spin 1s linear infinite;
+    margin-bottom: 20px;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+    .pageTitle {
+        font-size: 2rem;
+    }
+    
+    .pageDescription {
+        font-size: 1rem;
+    }
+    
+    .courseGrid {
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        gap: 20px;
+    }
+}
+
+@media (max-width: 480px) {
+    .courseGrid {
+        grid-template-columns: 1fr;
+    }
+    
+    .pageTitle {
+        font-size: 1.8rem;
+    }
+} 

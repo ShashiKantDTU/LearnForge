@@ -1,0 +1,781 @@
+/* MarkdownRenderer.module.css - Styles for markdown content display */
+
+/* Dark theme variables */
+:root {
+  --markdown-bg: transparent;
+  --markdown-text: var(--var-text, #333333);
+  --markdown-code-bg: var(--var-surface-2, rgba(27, 31, 35, 0.05));
+  --markdown-code-text: var(--var-text, #333333);
+  --markdown-table-bg: var(--var-surface, #ffffff);
+  --markdown-table-border: var(--var-divider, #e0e0e0);
+  --markdown-table-header-bg: var(--var-surface-2, #f5f5f5);
+  --markdown-table-alternate-row: var(--var-surface-2, #f8f9fa);
+  --markdown-table-hover: rgba(var(--var-secondary-rgb, 76, 175, 80), 0.05);
+  --markdown-link-color: var(--var-secondary, #0366d6);
+  --markdown-blockquote-bg: var(--var-surface-2, rgba(76, 175, 80, 0.05));
+  --markdown-blockquote-border: var(--var-secondary, #4caf50);
+  --markdown-pre-bg: var(--var-surface-2, #f6f8fa);
+  --markdown-divider: var(--var-divider, #e2e8f0);
+  --markdown-ascii-table-bg: var(--var-surface-2, #f8f9fa);
+  --markdown-ascii-table-border: var(--var-divider, #e1e4e8);
+  --markdown-ascii-table-text: var(--var-text, #24292e);
+}
+
+/* Dark theme support using prefers-color-scheme */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --markdown-bg: transparent;
+    --markdown-text: var(--var-text, #e0e0e0);
+    --markdown-code-bg: var(--var-surface-2, rgba(255, 255, 255, 0.1));
+    --markdown-code-text: var(--var-text, #e0e0e0);
+    --markdown-table-bg: var(--var-surface, #2d2d2d);
+    --markdown-table-border: var(--var-divider, #444444);
+    --markdown-table-header-bg: var(--var-surface-2, #383838);
+    --markdown-table-alternate-row: var(--var-surface-2, #333333);
+    --markdown-table-hover: rgba(var(--var-secondary-rgb, 76, 175, 80), 0.15);
+    --markdown-link-color: var(--var-secondary, #58a6ff);
+    --markdown-blockquote-bg: var(--var-surface-2, rgba(76, 175, 80, 0.1));
+    --markdown-blockquote-border: var(--var-secondary, #4caf50);
+    --markdown-pre-bg: var(--var-surface-2, #2d2d2d);
+    --markdown-divider: var(--var-divider, #444444);
+    --markdown-ascii-table-bg: var(--var-surface-2, #2d2d2d);
+    --markdown-ascii-table-border: var(--var-divider, #444444);
+    --markdown-ascii-table-text: var(--var-text, #e0e0e0);
+  }
+}
+
+.markdownContainer {
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  line-height: 1.6;
+  color: var(--markdown-text);
+  background-color: var(--markdown-bg);
+  max-width: 100%;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
+/* Ensure all direct descendants of the markdown container have right padding */
+.markdownContainer > * {
+  padding-right: 10px;
+  box-sizing: border-box;
+  max-width: 100%;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  word-break: normal;
+  text-align: left !important;
+}
+
+/* Headings */
+.markdownContainer h1, 
+.markdownContainer h2, 
+.markdownContainer h3, 
+.markdownContainer h4, 
+.markdownContainer h5, 
+.markdownContainer h6 {
+  margin-top: 1.5em;
+  margin-bottom: 0.5em;
+  font-weight: 600;
+  line-height: 1.25;
+  color: var(--markdown-text);
+}
+
+.markdownContainer h1 {
+  font-size: 2rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--markdown-divider);
+}
+
+.markdownContainer h2 {
+  font-size: 1.6rem;
+  font-weight: 600;
+  position: relative;
+  padding-bottom: 0.5rem;
+}
+
+.markdownContainer h2::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 40px;
+  height: 3px;
+  background: var(--markdown-blockquote-border);
+  border-radius: 2px;
+}
+
+.markdownContainer h3 {
+  font-size: 1.3rem;
+  font-weight: 600;
+}
+
+.markdownContainer h4 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--markdown-text);
+}
+
+.markdownContainer h5 {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--markdown-text);
+}
+
+.markdownContainer h6 {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--markdown-text);
+  font-style: italic;
+}
+
+/* Paragraphs and text */
+.markdownContainer p, 
+.markdownContainer li, 
+.markdownContainer td, 
+.markdownContainer th,
+.markdownContainer blockquote p {
+  text-align: left !important; /* Force left alignment for all text elements */
+  margin: 16px 0;
+  font-size: 1.05rem;
+  line-height: 1.8; /* Increased line height for better readability */
+  max-width: 100%;
+  word-break: break-word; /* Allow breaking long words */
+  overflow-wrap: break-word;
+  hyphens: auto;
+  color: var(--markdown-text);
+  padding-right: 8px; /* Increased from 3px to 8px */
+  box-sizing: border-box;
+  text-rendering: optimizeLegibility;
+}
+
+/* Fix inline elements that were causing wrapping issues */
+.markdownContainer a, 
+.markdownContainer code:not(pre code),
+.markdownContainer strong, 
+.markdownContainer em {
+  display: inline; /* Changed from inline-block to fix wrapping */
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  word-break: break-word; /* Allow breaking of words if needed */
+  max-width: 100%;
+  letter-spacing: 0.015em; /* Increased from 0.01em to 0.015em */
+  padding-right: 0.25em; /* Increased from 0.1em to 0.25em */
+}
+
+.markdownContainer strong {
+  font-weight: 600;
+  color: var(--markdown-text);
+}
+
+.markdownContainer em {
+  font-style: italic;
+  color: var(--markdown-text);
+}
+
+.markdownContainer del {
+  text-decoration: line-through;
+  color: rgba(var(--markdown-text), 0.7);
+}
+
+/* Lists */
+.markdownContainer ul, 
+.markdownContainer ol {
+  margin-top: 0.8rem;
+  margin-bottom: 1.5rem;
+  padding-left: 1.8rem; /* Increased padding for better hierarchy */
+  text-align: left !important;
+}
+
+.markdownContainer li {
+  margin-bottom: 0.6rem; /* Increased spacing between list items */
+  text-align: left !important;
+  line-height: 1.7;
+  position: relative;
+}
+
+.markdownContainer ul li {
+  list-style-type: disc;
+}
+
+.markdownContainer ol li {
+  list-style-type: decimal;
+}
+
+.markdownContainer ul ul, 
+.markdownContainer ol ul {
+  list-style-type: circle;
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+/* Blockquotes */
+.markdownContainer blockquote {
+  margin: 1.5rem 0;
+  padding: 1.2rem 1.5rem;
+  border-left: 4px solid var(--markdown-blockquote-border);
+  background-color: var(--markdown-blockquote-bg);
+  border-radius: 0 8px 8px 0;
+  font-style: italic;
+  color: var(--markdown-text);
+  text-align: left !important;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+}
+
+.markdownContainer blockquote p {
+  margin: 0;
+  font-size: 1.05rem;
+}
+
+/* Code blocks and inline code */
+.markdownContainer code {
+  font-family: 'Courier New', Courier, monospace;
+  padding: 0.2em 0.4em;
+  background-color: var(--markdown-code-bg);
+  color: var(--markdown-code-text);
+  border-radius: 3px;
+  font-size: 85%;
+}
+
+.markdownContainer pre {
+  background-color: var(--markdown-pre-bg);
+  border-radius: 6px;
+  padding: 16px;
+  overflow: auto;
+  font-size: 85%;
+  line-height: 1.45;
+}
+
+/* Improved scrollbars for code blocks */
+.markdownContainer pre::-webkit-scrollbar {
+  height: 8px;
+  width: 8px;
+}
+
+.markdownContainer pre::-webkit-scrollbar-thumb {
+  background: var(--markdown-table-border);
+  border-radius: 4px;
+}
+
+.markdownContainer pre::-webkit-scrollbar-thumb:hover {
+  background: var(--markdown-blockquote-border);
+}
+
+.markdownContainer pre::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.05);
+  border-radius: 4px;
+}
+
+/* Tables */
+.markdownContainer table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.5rem 0;
+  display: table;
+  overflow-x: auto;
+  border: 1px solid var(--markdown-table-border);
+  border-radius: 8px;
+  text-align: left !important;
+  background-color: var(--markdown-table-bg);
+  table-layout: fixed; /* Fixed table layout to help with wrapping */
+}
+
+.markdownContainer thead {
+  background-color: var(--markdown-table-header-bg);
+  border-bottom: 2px solid var(--markdown-table-border);
+}
+
+.markdownContainer th, 
+.markdownContainer td {
+  padding: 0.8rem 1rem;
+  word-break: break-word;
+  max-width: 300px;
+  overflow-wrap: break-word;
+  hyphens: auto;
+  border: 1px solid var(--markdown-table-border);
+  text-align: left !important;
+  vertical-align: top;
+  color: var(--markdown-text);
+}
+
+.markdownContainer th {
+  font-weight: 600;
+  color: var(--markdown-text);
+}
+
+.markdownContainer tr:nth-child(even) {
+  background-color: var(--markdown-table-alternate-row);
+}
+
+.markdownContainer tr:hover {
+  background-color: var(--markdown-table-hover);
+}
+
+/* Links */
+.markdownContainer a {
+  color: var(--markdown-link-color);
+  text-decoration: none;
+}
+
+.markdownContainer a:hover {
+  text-decoration: underline;
+}
+
+.markdownContainer a:focus {
+  outline: 2px solid var(--markdown-blockquote-border);
+  outline-offset: 2px;
+}
+
+/* Horizontal Rule */
+.markdownContainer hr {
+  height: 2px;
+  background: linear-gradient(to right, 
+    rgba(var(--markdown-blockquote-border-rgb, 76, 175, 80), 0.2), 
+    rgba(var(--markdown-blockquote-border-rgb, 76, 175, 80), 0.5), 
+    rgba(var(--markdown-blockquote-border-rgb, 76, 175, 80), 0.2));
+  border: none;
+  margin: 2.5rem 0;
+  border-radius: 2px;
+}
+
+/* Images */
+.markdownContainer img {
+  max-width: 100%;
+  height: auto;
+  margin: 1.5rem auto;
+  display: block;
+  border-radius: 8px;
+  object-fit: contain;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+}
+
+.markdownContainer img + em {
+  display: block;
+  text-align: center;
+  font-size: 0.9rem;
+  color: var(--markdown-text);
+  opacity: 0.8;
+  margin-top: 0.5rem;
+}
+
+/* Syntax Highlighting - Improved contrast */
+.markdownContainer .token.comment,
+.markdownContainer .token.prolog,
+.markdownContainer .token.doctype,
+.markdownContainer .token.cdata {
+  color: #8292a2;
+}
+
+.markdownContainer .token.punctuation {
+  color: #f8f8f2;
+}
+
+.markdownContainer .token.property,
+.markdownContainer .token.tag,
+.markdownContainer .token.constant,
+.markdownContainer .token.symbol,
+.markdownContainer .token.deleted {
+  color: #f92672;
+}
+
+.markdownContainer .token.boolean,
+.markdownContainer .token.number {
+  color: #ae81ff;
+}
+
+.markdownContainer .token.selector,
+.markdownContainer .token.attr-name,
+.markdownContainer .token.string,
+.markdownContainer .token.char,
+.markdownContainer .token.builtin,
+.markdownContainer .token.inserted {
+  color: #a6e22e;
+}
+
+/* Table of Contents */
+.tableOfContents {
+  background-color: var(--markdown-table-header-bg);
+  border-radius: 8px;
+  padding: 1.2rem 1.5rem;
+  margin-bottom: 2rem;
+  border: 1px solid var(--markdown-table-border);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+}
+
+.tableOfContents h3 {
+  margin-top: 0;
+  font-size: 1.2rem;
+  color: var(--markdown-text);
+}
+
+.tableOfContents ul {
+  padding-left: 1.5rem;
+}
+
+.tableOfContents li {
+  margin-bottom: 0.4rem;
+}
+
+.tableOfContents a {
+  display: inline-block;
+  padding: 0.2rem 0;
+  color: var(--markdown-link-color);
+}
+
+/* KaTeX Math Equations */
+.math {
+  overflow-x: auto;
+  margin: 1rem 0;
+  padding: 0.5rem 0;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+  .markdownContainer {
+    font-size: 16px;
+  }
+  
+  .markdownContainer h1 {
+    font-size: 1.7rem;
+  }
+  
+  .markdownContainer h2 {
+    font-size: 1.4rem;
+  }
+  
+  .markdownContainer h3 {
+    font-size: 1.2rem;
+  }
+  
+  .markdownContainer pre {
+    padding: 1rem;
+  }
+  
+  .markdownContainer pre code {
+    font-size: 0.85rem;
+  }
+  
+  .markdownContainer blockquote {
+    padding: 1rem 1.2rem;
+  }
+  
+  .markdownContainer th, 
+  .markdownContainer td {
+    padding: 0.7rem 0.9rem;
+  }
+  
+  .markdownContainer table {
+    display: block; /* Switch to block on mobile for scrolling */
+  }
+  
+  .markdownContainer p,
+  .markdownContainer li {
+    font-size: 1rem;
+    line-height: 1.7;
+  }
+  
+  .asciiTable {
+    font-size: 12px !important;
+    padding: 8px !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .markdownContainer h1 {
+    font-size: 1.5rem;
+  }
+  
+  .markdownContainer h2 {
+    font-size: 1.3rem;
+  }
+  
+  .markdownContainer h3 {
+    font-size: 1.1rem;
+  }
+  
+  .markdownContainer pre {
+    padding: 0.8rem;
+  }
+  
+  .markdownContainer pre code {
+    font-size: 0.8rem;
+  }
+}
+
+/* Focus styles for accessibility */
+.markdownContainer a:focus,
+.markdownContainer button:focus {
+  outline: 2px solid var(--markdown-blockquote-border);
+  outline-offset: 2px;
+}
+
+/* Print styles for better printed documents */
+@media print {
+  .markdownContainer {
+    font-size: 12pt;
+    line-height: 1.5;
+    background-color: white;
+    color: black;
+  }
+  
+  .markdownContainer a {
+    text-decoration: underline;
+    color: #000;
+    border-bottom: none;
+  }
+  
+  .markdownContainer pre,
+  .markdownContainer code {
+    background-color: #f5f5f5 !important;
+    border: 1px solid #ddd;
+    color: #333 !important;
+  }
+  
+  .markdownContainer h1, 
+  .markdownContainer h2, 
+  .markdownContainer h3, 
+  .markdownContainer h4 {
+    page-break-after: avoid;
+    color: black;
+  }
+  
+  .markdownContainer img {
+    max-width: 100% !important;
+    page-break-inside: avoid;
+  }
+  
+  .markdownContainer pre, 
+  .markdownContainer blockquote {
+    page-break-inside: avoid;
+  }
+}
+
+/* Special styling for ASCII tables */
+.asciiTable {
+  font-family: 'Courier New', Courier, monospace !important;
+  white-space: pre !important;
+  overflow-x: auto !important;
+  line-height: 1.2 !important;
+  font-size: 14px !important;
+  background-color: var(--markdown-ascii-table-bg) !important;
+  border-radius: 4px !important;
+  padding: 12px !important;
+  margin: 15px 0 !important;
+  border: 1px solid var(--markdown-ascii-table-border) !important;
+  letter-spacing: 0 !important; /* critical for alignment */
+  tab-size: 4 !important;
+  color: var(--markdown-ascii-table-text) !important;
+}
+
+/* ASCII table header styling */
+.asciiTableHeader {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: var(--markdown-ascii-table-text);
+  font-size: 0.9rem;
+  border-bottom: 1px solid var(--markdown-ascii-table-border);
+  padding-bottom: 6px;
+}
+
+/* VS Code styled code blocks */
+.codeBlockContainer {
+  position: relative;
+  margin: 1.5rem 0;
+  border-radius: 6px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  background-color: var(--markdown-pre-bg);
+  border: 1px solid var(--markdown-table-border);
+  font-family: 'Fira Code', 'Consolas', 'Monaco', 'Menlo', 'Ubuntu Mono', 'Courier New', monospace !important;
+  max-width: 100%; /* Ensure container doesn't exceed available width */
+}
+
+.codeBlockHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem 1rem;
+  background-color: var(--markdown-table-header-bg);
+  border-bottom: 1px solid var(--markdown-table-border);
+  font-family: 'Segoe UI', 'SF Pro Display', system-ui, sans-serif;
+  font-size: 0.85rem;
+  color: var(--markdown-text);
+}
+
+.codeLanguage {
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 0.75rem;
+  opacity: 0.8;
+}
+
+.copyButton {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--markdown-text);
+  opacity: 0.7;
+  padding: 4px 8px;
+  font-size: 0.8rem;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+}
+
+.copyButton:hover {
+  opacity: 1;
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.copyButton:focus {
+  outline: 2px solid var(--markdown-blockquote-border);
+  outline-offset: 1px;
+}
+
+.copyButton svg {
+  margin-right: 4px;
+  font-size: 0.9rem;
+}
+
+.copySuccess {
+  opacity: 1;
+  color: var(--markdown-blockquote-border);
+}
+
+.codeBlockContent {
+  font-family: 'Fira Code', 'Consolas', 'Monaco', 'Menlo', 'Ubuntu Mono', 'Courier New', monospace !important;
+  font-size: 1rem !important;
+  line-height: 1.5;
+  padding: 0 !important;
+  margin: 0 !important;
+  overflow-x: auto !important;
+  letter-spacing: 0 !important;
+  background-color: var(--markdown-pre-bg);
+}
+
+/* Style the code inside syntax highlighter */
+.codeBlockContent pre {
+  margin: 0 !important;
+  padding: 1rem !important;
+  background-color: transparent !important;
+  border-radius: 0 !important;
+  overflow-x: auto !important;
+  font-size: inherit !important;
+}
+
+.codeBlockContent code {
+  font-family: 'Fira Code', 'Consolas', 'Monaco', 'Menlo', 'Ubuntu Mono', 'Courier New', monospace !important;
+  font-size: 1rem !important;
+  tab-size: 2 !important;
+  hyphens: none !important;
+  letter-spacing: 0 !important;
+}
+
+/* Fixed line numbers that don't leave a gap */
+.codeBlockContent :global(.linenumber) {
+  position: sticky !important;
+  left: 0 !important;
+  z-index: 2 !important;
+  background-color: var(--markdown-pre-bg) !important;
+  border-right: 1px solid rgba(127, 127, 127, 0.2) !important;
+  color: rgba(127, 127, 127, 0.5) !important;
+  user-select: none !important;
+  padding-right: 0.7em !important;
+  margin-right: 0.7em !important;
+  text-align: right !important;
+}
+
+/* Fix for the syntax highlighter to give cleaner look */
+.codeBlockContent :global(.react-syntax-highlighter) {
+  background: transparent !important;
+}
+
+/* Fix for code content to ensure proper scrolling */
+.codeBlockContent :global(.react-syntax-highlighter-code) {
+  white-space: pre !important;
+  overflow-x: visible !important;
+}
+
+/* Improved scrollbar styling */
+.codeBlockContent::-webkit-scrollbar {
+  height: 8px;
+  width: 8px;
+}
+
+.codeBlockContent::-webkit-scrollbar-thumb {
+  background: var(--markdown-table-border);
+  border-radius: 4px;
+}
+
+.codeBlockContent::-webkit-scrollbar-thumb:hover {
+  background: var(--markdown-blockquote-border);
+}
+
+.codeBlockContent::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.05);
+  border-radius: 4px;
+}
+
+/* Responsive adjustments for code blocks */
+@media (max-width: 768px) {
+  .codeBlockContainer {
+    margin: 1rem 0;
+  }
+  
+  .codeBlockHeader {
+    padding: 0.4rem 0.6rem;
+  }
+  
+  .codeBlockContent code {
+    font-size: 0.95rem !important; /* Slightly smaller on mobile */
+  }
+  
+  .copyButton {
+    padding: 2px 6px;
+  }
+}
+
+@media (max-width: 480px) {
+  .codeBlockContent code {
+    font-size: 0.9rem !important; /* Smaller on very small screens */
+  }
+  
+  .codeLanguage {
+    font-size: 0.7rem;
+  }
+}
+
+/* Override react-syntax-highlighter defaults that might interfere with scrolling */
+.codeBlockContent :global(.react-syntax-highlighter) {
+  margin: 0 !important;
+  padding: 0 !important;
+  background: none !important;
+  overflow-x: auto !important;
+}
+
+/* Ensure line numbers column stays fixed while scrolling horizontally */
+.codeBlockContent :global(.linenumber) {
+  position: sticky !important;
+  left: 0 !important;
+  z-index: 2 !important;
+}
+
+/* Prevent parent containers from constraining the code block width */
+.markdownContainer pre {
+  max-width: 100% !important;
+  overflow-x: auto !important;
+}
+
+/* Ensure code blocks get proper scrollbars in all browsers */
+@supports (-webkit-appearance:none) {
+  .codeBlockContent {
+    -webkit-overflow-scrolling: touch;
+  }
+}
+
+/* Prevent line breaks inside inline code spans */
+.markdownContainer code:not(pre code) {
+  white-space: nowrap !important;
+  overflow-x: visible !important;
+} 

@@ -1,0 +1,34 @@
+.container {
+    width: 100%;
+    min-height: 100vh;
+    background-color: var(--var-background);
+    display: flex;
+    flex-direction: column;
+}
+
+.main {
+    flex: 1;
+    padding: 120px 40px 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    text-align: center;
+}
+
+.title {
+    font-size: 3rem;
+    font-weight: 700;
+    margin-bottom: 20px;
+    background: linear-gradient(135deg, var(--var-tertiary), var(--var-quaternary));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.description {
+    font-size: 1.25rem;
+    color: var(--var-text-secondary);
+    max-width: 800px;
+    line-height: 1.6;
+} 

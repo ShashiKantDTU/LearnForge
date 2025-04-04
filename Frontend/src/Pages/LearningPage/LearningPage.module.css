@@ -1,0 +1,1363 @@
+﻿/* Main layout */
+.MainContainer {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    color: var(--var-text);
+    font-family: 'Inter', 'Segoe UI', Roboto, sans-serif;
+    background-color: var(--var-background, #f9f9f9);
+}
+
+.ContentContainer {
+    display: grid;
+    /* More flexible grid with min and max constraints */
+    grid-template-columns: minmax(240px, 280px) minmax(65%, 800px) minmax(200px, 250px);
+    gap: 24px;
+    max-width: 1600px;
+    margin: 0 auto;
+    padding: 0 16px 40px;
+    box-sizing: border-box;
+    width: 100%;
+}
+
+/* Course header */
+.courseHeader {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 24px;
+    background: var(--var-surface);
+    border-bottom: 1px solid var(--var-divider);
+    margin-bottom: 24px;
+}
+
+.backLink {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--var-text-secondary);
+    text-decoration: none;
+    font-weight: 500;
+    padding: 8px 16px;
+    border-radius: 30px;
+    transition: all 0.2s ease;
+    background-color: var(--var-divider);
+}
+
+.backLink:hover {
+    color: var(--var-primary);
+    transform: translateY(-2px);
+    box-shadow: var(--var-shadow-sm);
+}
+
+.courseName {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin: 0;
+    text-align: center;
+    flex-grow: 1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    padding: 0 20px;
+}
+
+.courseActions {
+    display: flex;
+    gap: 12px;
+}
+
+.actionButton {
+    background: none;
+    border: none;
+    color: var(--var-text-secondary);
+    font-size: 1.1rem;
+    cursor: pointer;
+    padding: 8px;
+    border-radius: 50%;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.actionButton:hover {
+    color: var(--var-primary);
+    background-color: var(--var-surface-2, rgba(0, 0, 0, 0.05));
+    transform: translateY(-2px);
+}
+
+.actionButton:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px var(--var-primary-light);
+}
+
+.actionButton.bookmarked {
+    color: var(--var-primary);
+    background-color: var(--var-primary-light, rgba(74, 108, 247, 0.1));
+}
+
+.actionButton.bookmarked:hover {
+    background-color: var(--var-primary-light, rgba(74, 108, 247, 0.2));
+}
+
+/* Course Progress Bar */
+.courseProgress {
+    max-width: 1200px;
+    margin: -10px auto 24px;
+    padding: 0 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.progressBarContainer {
+    height: 8px;
+    background-color: var(--var-divider);
+    border-radius: 4px;
+    overflow: hidden;
+    width: 100%;
+}
+
+.progressBarFill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--var-secondary-light), var(--var-secondary));
+    border-radius: 4px;
+    transition: width 0.5s ease;
+}
+
+.progressText {
+    font-size: 0.85rem;
+    color: var(--var-text-secondary);
+    text-align: right;
+}
+
+/* Sidebar */
+.Sidebar {
+    background: var(--var-surface);
+    border-radius: 12px;
+    box-shadow: var(--var-shadow-sm);
+    /* Use max-height with calc for better sticky behavior */
+    max-height: calc(100vh - 100px);
+    position: sticky;
+    /* Use CSS variables for consistent spacing */
+    top: var(--header-height, 80px);
+    overflow-y: auto;
+    scrollbar-width: thin;
+    /* Smooth transitions for resizing */
+    transition: width 0.3s ease, max-height 0.3s ease;
+}
+
+.Sidebar::-webkit-scrollbar {
+    width: 6px;
+}
+
+.Sidebar::-webkit-scrollbar-thumb {
+    background-color: var(--var-divider);
+    border-radius: 3px;
+}
+
+.SidebarHeader {
+    padding: 16px;
+    border-bottom: 1px solid var(--var-divider);
+}
+
+.SidebarHeader h3 {
+    margin: 0;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--var-text);
+}
+
+.SidebarContent ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.SidebarContent li {
+    border-bottom: 1px solid var(--var-divider);
+}
+
+.SidebarContent a {
+    display: flex;
+    padding: 16px;
+    text-decoration: none;
+    color: var(--var-text);
+    transition: all 0.2s ease;
+    gap: 12px;
+}
+
+.sectionLinkContent {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.sectionTitle {
+    font-weight: 500;
+    font-size: 0.95rem;
+}
+
+.sectionDuration {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 0.8rem;
+    color: var(--var-text-secondary);
+}
+
+.durationIcon {
+    font-size: 0.7rem;
+}
+
+.sectionNumber {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: var(--var-divider);
+    color: var(--var-text-secondary);
+    font-size: 0.8rem;
+    font-weight: 600;
+    flex-shrink: 0;
+}
+
+.completedIcon {
+    color: var(--var-secondary);
+}
+
+.completedSection {
+    color: var(--var-text-secondary);
+}
+
+.completedSection .sectionNumber {
+    background: rgba(var(--var-secondary-rgb, 76, 175, 80), 0.1);
+}
+
+.activeSectionLink a {
+    background-color: rgba(var(--var-secondary-rgb, 76, 175, 80), 0.1);
+    border-left: 3px solid var(--var-secondary);
+}
+
+/* Main content area */
+.Content {
+    background: var(--var-surface);
+    border-radius: 12px;
+    padding: 24px;
+    box-shadow: var(--var-shadow-sm);
+    /* Set max width for better readability */
+    max-width: 100%;
+    width: 100%;
+    /* Add margin for better spacing */
+    margin: 0 auto;
+    box-sizing: border-box;
+    /* Enhanced containment for long content */
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    overflow: hidden; /* Hide overflow in all directions by default */
+    flex: 1;
+    padding: 1.5rem;
+    overflow-x: hidden;
+}
+
+.sectionHeader {
+    margin-bottom: 24px;
+    border-bottom: 1px solid var(--var-divider);
+    padding-bottom: 16px;
+}
+
+.sectionHeader h1 {
+    margin: 0 0 8px 0;
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--var-text);
+}
+
+.sectionMeta {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    color: var(--var-text-secondary);
+    font-size: 0.9rem;
+}
+
+.completedBadge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(var(--var-secondary-rgb, 76, 175, 80), 0.1);
+    color: var(--var-secondary);
+    padding: 4px 10px;
+    border-radius: 16px;
+    font-size: 0.8rem;
+    font-weight: 500;
+}
+
+/* Markdown styling */
+.sectionContent {
+    line-height: 1.7;
+    color: var(--var-text);
+    font-size: 1.05rem;
+    overflow-x: hidden;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    hyphens: auto;
+    /* Enhanced text containment */
+    max-width: 100%;
+}
+
+.sectionContent p {
+    margin: 16px 0;
+    max-width: 100%;
+    word-break: break-word;
+}
+
+.sectionContent h2 {
+    margin-top: 32px;
+    font-size: 1.5rem;
+    position: relative;
+    padding-bottom: 8px;
+    scroll-margin-top: 80px; /* For smooth scrolling */
+}
+
+.sectionContent h2::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 40px;
+    height: 3px;
+    background: var(--var-secondary);
+    border-radius: 2px;
+}
+
+.sectionContent h3 {
+    margin-top: 24px;
+    font-size: 1.2rem;
+    scroll-margin-top: 80px; /* For smooth scrolling */
+}
+
+.sectionContent ul, .sectionContent ol {
+    padding-left: 24px;
+    margin: 16px 0;
+}
+
+.sectionContent li {
+    margin-bottom: 8px;
+}
+
+.sectionContent a, 
+.sectionContent code:not(pre code),
+.sectionContent strong, 
+.sectionContent em {
+    display: inline;
+    word-break: break-word;
+    overflow-wrap: break-word;
+    max-width: 100%;
+}
+
+.sectionContent a {
+    color: var(--var-secondary);
+    text-decoration: none;
+    border-bottom: 1px dashed var(--var-secondary);
+    transition: all 0.2s ease;
+}
+
+.sectionContent a:hover {
+    border-bottom: 1px solid var(--var-secondary);
+    opacity: 0.9;
+}
+
+.sectionContent img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    margin: 16px 0;
+    object-fit: contain;
+    /* Ensure images don't cause overflow */
+    display: block;
+}
+
+.sectionContent blockquote {
+    margin: 16px 0;
+    padding: 16px 24px;
+    border-left: 4px solid var(--var-secondary);
+    background: var(--var-surface-2);
+    border-radius: 0 8px 8px 0;
+    font-style: italic;
+    color: var(--var-text-secondary);
+}
+
+.sectionContent blockquote p {
+    margin: 0;
+}
+
+/* Code blocks */
+.sectionContent pre {
+    background: var(--var-surface-2);
+    padding: 16px;
+    border-radius: 8px;
+    overflow-x: auto;
+    margin: 16px 0;
+    position: relative;
+    border: 1px solid var(--var-divider);
+    background-image: linear-gradient(to right, transparent, transparent),
+                      linear-gradient(to right, transparent, rgba(var(--var-primary-rgb, 63, 81, 181), 0.05) 15%);
+    background-position: left center, right center;
+    background-repeat: no-repeat;
+    background-size: 100% 100%, 20px 100%;
+    background-attachment: local, scroll;
+    /* Enhanced containment for code blocks */
+    max-width: 100%;
+    white-space: pre-wrap; /* Allow wrapping of long lines */
+}
+
+.sectionContent code:not(pre code) {
+    font-family: 'Fira Code', 'Roboto Mono', monospace;
+    font-size: 0.9rem;
+    background: var(--var-surface-2);
+    padding: 2px 6px;
+    border-radius: 4px;
+    color: var(--var-text);
+    white-space: pre-wrap;
+    word-break: break-all;
+}
+
+.sectionContent pre code {
+    background: transparent;
+    padding: 0;
+    border-radius: 0;
+    color: var(--var-text);
+    display: block;
+    line-height: 1.5;
+    tab-size: 2;
+    /* Better handling of code without spaces */
+    word-break: break-all; /* Break anywhere if needed */
+    white-space: pre-wrap; /* Wrap long lines */
+}
+
+/* Language-specific code blocks */
+.codeBlock {
+    position: relative;
+    margin: 1rem 0;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    background-color: var(--var-surface-2);
+    overflow-x: auto;
+}
+
+.python {
+    border-left: 4px solid #3776ab;
+}
+
+.bash {
+    border-left: 4px solid #4eaa25;
+}
+
+.javascript {
+    border-left: 4px solid #f7df1e;
+}
+
+.mermaid {
+    text-align: center;
+    padding: 16px;
+    background: var(--var-surface-2);
+    border-radius: 8px;
+    overflow-x: auto;
+    margin: 24px 0;
+}
+
+/* Tables */
+.sectionContent table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 16px 0;
+    display: block;
+    overflow-x: auto;
+    border: 1px solid var(--var-divider);
+    border-radius: 8px;
+    /* Ensure table adapts to container */
+    max-width: 100%;
+    table-layout: fixed; /* Enforce equal column widths */
+}
+
+.sectionContent thead {
+    background-color: var(--var-surface-2);
+    border-bottom: 2px solid var(--var-divider);
+}
+
+.sectionContent th, .sectionContent td {
+    padding: 12px 16px;
+    word-break: break-word;
+    max-width: 300px;
+    /* Enhanced text containment in cells */
+    overflow-wrap: break-word;
+    hyphens: auto;
+}
+
+.sectionContent tr:nth-child(even) {
+    background-color: var(--var-surface-2);
+}
+
+/* Section navigation */
+.sectionNavigation {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 40px;
+    padding-top: 24px;
+    border-top: 1px solid var(--var-divider);
+}
+
+.navButton {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 8px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    background: var(--var-surface-2);
+    color: var(--var-text);
+}
+
+.navButton:hover {
+    background: var(--var-divider);
+    transform: translateY(-2px);
+    box-shadow: var(--var-shadow-sm);
+}
+
+.nextButton {
+    background: var(--var-secondary);
+    color: white;
+}
+
+.nextButton:hover {
+    background: var(--var-secondary-dark);
+}
+
+.completeButton {
+    background: var(--var-secondary);
+    color: white;
+}
+
+.completeButton:hover {
+    background: var(--var-secondary-dark);
+}
+
+.disabledButton {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.disabledButton:hover {
+    transform: none;
+    box-shadow: none;
+}
+
+/* Jump to topic sidebar */
+.JumpToTopic {
+    background: var(--var-surface);
+    border-radius: 12px;
+    padding: 16px;
+    box-shadow: var(--var-shadow-sm);
+    /* Use max-height with calc for better sticky behavior */
+    max-height: calc(100vh - 100px);
+    position: sticky;
+    /* Use CSS variables for consistent spacing */
+    top: var(--header-height, 80px);
+    overflow-y: auto;
+    /* Add subtle scroll for long TOCs */
+    scrollbar-width: thin;
+}
+
+.JumpToTopic h3 {
+    margin: 0 0 16px 0;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--var-text);
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--var-divider);
+}
+
+.JumpToTopic ul {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 24px 0;
+}
+
+.jumpLink {
+    padding: 8px 12px;
+    margin-bottom: 4px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-size: 0.9rem;
+    color: var(--var-text-secondary);
+}
+
+.jumpLink:hover {
+    background: var(--var-surface-2);
+    color: var(--var-text);
+}
+
+.subHeading {
+    padding-left: 24px;
+    font-size: 0.85rem;
+}
+
+.keyConceptsBox {
+    background: rgba(var(--var-secondary-rgb, 76, 175, 80), 0.05);
+    border-radius: 8px;
+    padding: 16px;
+    margin-top: 24px;
+    border-left: 3px solid var(--var-secondary);
+}
+
+.keyConceptsTitle {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 0 0 12px 0;
+    font-size: 1rem;
+    color: var(--var-text);
+}
+
+.conceptIcon {
+    color: var(--var-secondary);
+}
+
+.keyConceptsList {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.keyConceptsList li {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    padding: 6px 0;
+    font-size: 0.9rem;
+    color: var(--var-text-secondary);
+}
+
+.listIcon {
+    color: var(--var-secondary);
+    margin-top: 4px;
+    font-size: 0.8rem;
+}
+
+.noContent {
+    font-style: italic;
+    opacity: 0.8;
+}
+
+/* Loading and error states */
+.loadingContainer, .errorContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 50vh;
+    padding: 40px;
+    text-align: center;
+}
+
+.spinner {
+    width: 50px;
+    height: 50px;
+    border: 5px solid rgba(var(--var-secondary-rgb, 76, 175, 80), 0.2);
+    border-top-color: var(--var-secondary);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-bottom: 16px;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.errorContainer h2 {
+    color: var(--var-error);
+    margin-bottom: 16px;
+}
+
+.backButton {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 20px;
+    border-radius: 8px;
+    text-decoration: none;
+    color: var(--var-text);
+    background: var(--var-surface-2);
+    margin-top: 24px;
+    transition: all 0.2s ease;
+}
+
+.backButton:hover {
+    background: var(--var-divider);
+    transform: translateY(-2px);
+    box-shadow: var(--var-shadow-sm);
+}
+
+/* Improved responsive breakpoints */
+@media (min-width: 1601px) {
+    /* Extra large screens */
+    .ContentContainer {
+        grid-template-columns: minmax(250px, 300px) minmax(600px, 900px) minmax(220px, 300px);
+        max-width: 1800px;
+    }
+    
+    .Content {
+        font-size: 1.1rem;
+    }
+}
+
+@media (max-width: 1400px) {
+    .ContentContainer {
+        grid-template-columns: minmax(220px, 260px) minmax(60%, 750px) minmax(180px, 220px);
+        gap: 20px;
+    }
+}
+
+@media (max-width: 1200px) {
+    .ContentContainer {
+        grid-template-columns: minmax(200px, 240px) 1fr minmax(160px, 200px);
+        gap: 16px;
+    }
+}
+
+@media (max-width: 992px) {
+    .ContentContainer {
+        grid-template-columns: minmax(200px, 220px) 1fr;
+    }
+
+.JumpToTopic {
+        display: none;
+    }
+}
+
+@media (max-width: 768px) {
+    .ContentContainer {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+    
+    .Sidebar {
+        position: static;
+        height: auto;
+        max-height: none;
+        margin-bottom: 16px;
+    }
+    
+    .Content {
+        padding: 20px;
+    }
+    
+    .courseHeader {
+        flex-direction: column;
+        gap: 12px;
+        align-items: flex-start;
+    }
+    
+    .courseName {
+        text-align: left;
+        padding: 0;
+    }
+    
+    .courseActions {
+        align-self: flex-end;
+    }
+    
+    .courseProgress {
+        padding: 0 16px;
+    }
+
+    .contentMarkdown {
+        padding: 0;
+    }
+}
+
+@media (max-width: 480px) {
+    .sectionHeader h1 {
+        font-size: 1.5rem;
+    }
+    
+    .Content {
+        padding: 16px;
+    }
+    
+    .sectionNavigation {
+        flex-direction: column;
+        gap: 12px;
+    }
+    
+    .navButton {
+        width: 100%;
+        justify-content: center;
+    }
+    
+    .codeBlockHeader {
+        padding: 6px 12px;
+        font-size: 0.75rem;
+    }
+    
+    .copyButton {
+        padding: 2px 6px;
+    }
+    
+    .codeBlock code {
+        font-size: 0.8rem;
+        line-height: 1.4;
+    }
+    
+    /* Ensure code blocks don't cause horizontal scrolling on mobile */
+    .sectionContent {
+        padding: 0 8px;
+    }
+}
+
+/* Mermaid Diagrams */
+.mermaidDiagram {
+    background-color: var(--var-surface-2, #f5f5f5);
+    padding: 20px;
+    border-radius: 8px;
+    margin: 20px 0;
+    overflow-x: auto;
+    min-height: 100px;
+    max-width: 100%; /* Ensure container respects parent width */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    border: 1px solid var(--var-divider, #e0e0e0);
+}
+
+.mermaidDiagram svg {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin: 0 auto;
+    /* Ensure SVG respects container width */
+    width: 100%;
+}
+
+/* Fix SVG text rendering */
+.mermaidDiagram .label {
+    font-family: 'Inter', sans-serif;
+    fill: var(--var-text, #333);
+    color: var(--var-text, #333);
+}
+
+.mermaidDiagram .cluster rect {
+    fill: var(--var-surface-2, #f5f5f5);
+    stroke: var(--var-divider, #e0e0e0);
+}
+
+.diagramError {
+    padding: 15px;
+    background-color: rgba(var(--var-error-rgb, 244, 67, 54), 0.1);
+    border: 1px solid rgba(var(--var-error-rgb, 244, 67, 54), 0.3);
+    border-radius: 8px;
+    margin: 10px 0;
+}
+
+.diagramError pre {
+    margin-top: 10px;
+    background-color: rgba(0, 0, 0, 0.05);
+    padding: 10px;
+    border-radius: 4px;
+    overflow-x: auto;
+}
+
+/* Loading and error states for sections */
+.sectionLoading, .sectionError, .noContent {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 300px;
+    padding: 20px;
+    text-align: center;
+    border-radius: 8px;
+    background-color: var(--var-surface-2, #f5f5f5);
+}
+
+.sectionLoading .spinner {
+    width: 40px;
+    height: 40px;
+    border: 4px solid rgba(0, 0, 0, 0.1);
+    border-left-color: var(--var-primary, #3f51b5);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-bottom: 15px;
+}
+
+.sectionError {
+    background-color: rgba(var(--var-error-rgb, 244, 67, 54), 0.05);
+    border: 1px solid rgba(var(--var-error-rgb, 244, 67, 54), 0.2);
+}
+
+.retryButton {
+    margin-top: 15px;
+    padding: 8px 16px;
+    background-color: var(--var-primary, #3f51b5);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: background-color 0.2s;
+}
+
+.retryButton:hover {
+    background-color: var(--var-primary-dark, #303f9f);
+}
+
+.noContent {
+    background-color: rgba(0, 0, 0, 0.03);
+    color: var(--var-text-secondary, #757575);
+}
+
+/* Fix pre/code styling to avoid DOM nesting issues */
+.sectionContent pre {
+    margin: 20px 0;
+    position: relative;
+}
+
+/* Ensure divs containing pre elements have proper spacing */
+.sectionContent div > pre,
+.sectionContent > div > pre {
+    margin: 20px 0;
+}
+
+/* This ensures any divs replacing p tags with pre children look good */
+.sectionContent > div {
+    margin: 16px 0;
+}
+
+/* Ensure tables don't cause overflow issues */
+.sectionContent table {
+    table-layout: fixed;
+    width: 100%;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.markdownParagraph {
+    margin: 16px 0;
+    line-height: 1.7;
+}
+
+/* Enhanced loading animation for content generation */
+.loadingAnimation {
+    position: relative;
+    width: 100px;
+    height: 100px;
+    margin: 0 auto 30px;
+    z-index: 2;
+}
+
+.spinnerLarge {
+    width: 80px;
+    height: 80px;
+    border: 6px solid rgba(var(--var-secondary-rgb, 76, 175, 80), 0.1);
+    border-left-color: var(--var-secondary, #4caf50);
+    border-radius: 50%;
+    animation: spin 1.5s linear infinite;
+    position: absolute;
+    top: 10px;
+    left: 10px;
+}
+
+.pulsingDot {
+    width: 30px;
+    height: 30px;
+    background-color: var(--var-secondary, #4caf50);
+    border-radius: 50%;
+    position: absolute;
+    top: 35px;
+    left: 35px;
+    animation: pulse 2s ease-in-out infinite;
+}
+
+.generatingTitle {
+    font-size: 1.6rem;
+    color: var(--var-text, #333);
+    margin-bottom: 10px;
+    font-weight: 600;
+}
+
+.generatingDescription {
+    font-size: 1.1rem;
+    color: var(--var-text-secondary, #666);
+    margin-bottom: 25px;
+}
+
+.generationSteps {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin: 20px 0;
+    padding: 0 20px;
+    max-width: 400px;
+    margin: 0 auto 25px;
+}
+
+.step {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 12px 16px;
+    background-color: rgba(var(--var-secondary-rgb, 76, 175, 80), 0.05);
+    border-radius: 8px;
+    border-left: 3px solid var(--var-secondary, #4caf50);
+    color: var(--var-text, #333);
+    font-size: 0.95rem;
+    animation: fadeIn 0.6s ease-out;
+    animation-fill-mode: both;
+}
+
+.step:nth-child(1) {
+    animation-delay: 0.2s;
+}
+
+.step:nth-child(2) {
+    animation-delay: 0.5s;
+}
+
+.step:nth-child(3) {
+    animation-delay: 0.8s;
+}
+
+.stepIcon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    background-color: rgba(var(--var-secondary-rgb, 76, 175, 80), 0.1);
+    border-radius: 50%;
+    color: var(--var-secondary, #4caf50);
+}
+
+.generationTime {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    font-size: 0.9rem;
+    color: var(--var-text-secondary, #666);
+    margin-top: 20px;
+    background-color: rgba(var(--var-warning-rgb, 255, 152, 0), 0.1);
+    padding: 10px 16px;
+    border-radius: 8px;
+    max-width: 400px;
+    margin: 0 auto;
+}
+
+.clockIcon {
+    color: var(--var-warning, #ff9800);
+}
+
+.generationNote {
+    font-size: 0.85rem;
+    color: var(--var-text-secondary, #666);
+    margin-top: 10px;
+    font-style: italic;
+}
+
+/* Animations */
+@keyframes pulse {
+    0% { transform: scale(0.8); opacity: 0.5; }
+    50% { transform: scale(1.1); opacity: 1; }
+    100% { transform: scale(0.8); opacity: 0.5; }
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Ensure mobile responsiveness */
+@media (max-width: 480px) {
+    .generationSteps {
+        padding: 0;
+    }
+    
+    .step {
+        padding: 10px 12px;
+        font-size: 0.85rem;
+    }
+    
+    .stepIcon {
+        width: 28px;
+        height: 28px;
+    }
+    
+    .generatingTitle {
+        font-size: 1.4rem;
+    }
+    
+    .generatingDescription {
+        font-size: 1rem;
+    }
+}
+
+.loadingNote {
+    color: var(--var-text-secondary, #666);
+    font-size: 0.9rem;
+    margin-top: 10px;
+    opacity: 0.8;
+}
+
+.generationInProgress {
+    min-height: 450px;
+    background-color: var(--var-surface-2, #f8f9fa);
+    border: 1px dashed var(--var-secondary, #4caf50);
+    animation: pulseBackground 3s infinite ease-in-out;
+}
+
+.generationTimeWrapper {
+    background-color: rgba(var(--var-warning-rgb, 255, 152, 0), 0.05);
+    border-radius: 10px;
+    padding: 15px;
+    margin: 20px auto 0;
+    max-width: 420px;
+    border: 1px dashed var(--var-warning, #ff9800);
+}
+
+.generationTime {
+    margin: 0 !important;
+    background-color: transparent !important;
+    padding: 0 !important;
+}
+
+@keyframes pulseBackground {
+    0% { background-color: rgba(var(--var-secondary-rgb, 76, 175, 80), 0.02); }
+    50% { background-color: rgba(var(--var-secondary-rgb, 76, 175, 80), 0.08); }
+    100% { background-color: rgba(var(--var-secondary-rgb, 76, 175, 80), 0.02); }
+}
+
+/* Enhanced code blocks with header */
+.codeBlockWrapper {
+    position: relative;
+    margin: 1.5rem 0;
+    border-radius: 8px;
+    overflow: hidden;
+    background-color: var(--var-surface-2, #f8f9fa);
+    border: 1px solid var(--var-divider, #e0e0e0);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.codeBlockHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 16px;
+    background-color: rgba(0, 0, 0, 0.03);
+    border-bottom: 1px solid var(--var-divider, #e0e0e0);
+    font-family: 'Fira Code', monospace;
+    font-size: 0.9rem;
+    color: var(--var-text-secondary);
+}
+
+.codeLanguage {
+    font-weight: 500;
+    text-transform: uppercase;
+    font-size: 0.8rem;
+    color: var(--var-text-secondary);
+}
+
+.codeBlockActions {
+    display: flex;
+    gap: 8px;
+}
+
+.copyButton, .wrapButton {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 4px 8px;
+    border-radius: 4px;
+    border: none;
+    background-color: rgba(var(--var-primary-rgb, 63, 81, 181), 0.1);
+    color: var(--var-primary);
+    font-size: 0.8rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.copyButton:hover, .wrapButton:hover {
+    background-color: rgba(var(--var-primary-rgb, 63, 81, 181), 0.2);
+}
+
+.copyButton:focus, .wrapButton:focus {
+    outline: 2px solid var(--var-primary-light);
+    outline-offset: 1px;
+}
+
+.codeBlock {
+    position: relative;
+    text-align: left;
+    overflow-x: auto;
+    font-size: 0.9rem;
+    padding: 1.2rem;
+    margin: 0;
+    line-height: 1.6;
+}
+
+.wrapLines .codeBlock > div {
+    white-space: pre-wrap !important;
+    word-break: break-word !important;
+}
+
+.markdownParagraph {
+    font-size: 1.05rem;
+    line-height: 1.8;
+    margin: 1rem 0;
+    text-align: left !important;
+    color: var(--var-text);
+}
+
+.mermaidDiagram {
+    margin: 1.5rem 0;
+    text-align: center;
+    background-color: var(--var-surface-2);
+    padding: 1.5rem;
+    border-radius: 8px;
+    border: 1px solid var(--var-divider);
+}
+
+.diagramError {
+    color: var(--var-error);
+    background-color: rgba(var(--var-error-rgb), 0.05);
+    padding: 1rem;
+    border-radius: 8px;
+    border: 1px solid rgba(var(--var-error-rgb), 0.2);
+    margin: 1rem 0;
+    text-align: left;
+}
+
+/* Content placeholder styling */
+.contentPlaceholder {
+    width: 100%;
+    padding: 0 5px 0 0; /* Right padding to prevent clipping */
+    overflow-x: hidden;
+    background-color: transparent;
+    border: none;
+    text-align: left !important; /* Force text alignment to be left */
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    word-break: normal;
+}
+
+.contentPlaceholder h2 {
+    margin-top: 0;
+    color: var(--var-primary);
+    text-align: left !important;
+}
+
+.contentPlaceholder p {
+    margin-bottom: 20px;
+    font-size: 1.1rem;
+    text-align: left !important;
+}
+
+.contentInfo {
+    background-color: var(--var-surface-2);
+    padding: 15px;
+    border-radius: 8px;
+    text-align: left !important;
+    margin-top: 20px;
+}
+
+.contentInfo ul {
+    margin-top: 10px;
+    padding-left: 25px;
+    text-align: left !important;
+}
+
+.contentInfo li {
+    margin-bottom: 8px;
+    text-align: left !important;
+}
+
+/* Ensure mobile responsiveness */
+@media (max-width: 768px) {
+    .contentMarkdown {
+        padding: 0;
+        font-size: 1rem;
+    }
+    
+    .contentWrapper {
+        padding: 16px;
+    }
+    
+    .codeBlockHeader {
+        padding: 6px 12px;
+        font-size: 0.75rem;
+    }
+    
+    .copyButton, .wrapButton {
+        padding: 3px 6px;
+        font-size: 0.7rem;
+    }
+    
+    .codeBlock {
+        padding: 1rem;
+        font-size: 0.85rem;
+    }
+}
+
+/* Content wrapper styling */
+.contentWrapper {
+    width: 100%;
+    overflow-x: hidden;
+    background-color: var(--var-surface);
+    border-radius: 12px;
+    padding: 24px 35px 24px 24px; /* Increased right padding from 30px to 35px */
+    text-align: left !important; /* Force text alignment to be left */
+    box-shadow: var(--var-shadow-sm, 0 1px 3px rgba(0, 0, 0, 0.1));
+}
+
+/* Add styles for markdown content */
+.contentMarkdown {
+    padding: 0 15px 0 0 !important; /* Increased right padding from 8px to 15px */
+    width: 100%;
+    background-color: transparent !important; /* Force transparency to inherit parent background */
+    margin-bottom: 2rem;
+    text-align: left !important; /* Force text alignment to be left */
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    word-break: normal;
+    hyphens: auto;
+    box-sizing: border-box;
+    color: var(--var-text) !important; /* Force text color to match parent theme */
+}
+
+/* Enhanced code blocks with header */
+.codeBlockWrapper {
+    position: relative;
+    margin: 1.5rem 0;
+    border-radius: 8px;
+    overflow: hidden;
+    background-color: var(--var-surface-2, #f8f9fa);
+    border: 1px solid var(--var-divider, #e0e0e0);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+
+
+

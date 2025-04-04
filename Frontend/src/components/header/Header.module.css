@@ -1,0 +1,550 @@
+/* Header color variables that match the theme */
+:root {
+  --header-bg: var(--var-surface);
+  --header-border: var(--var-divider);
+  --header-text: var(--var-text);
+  --header-link-hover: var(--var-primary);
+  --header-active-link: var(--var-primary);
+  --header-active-bg: rgba(53, 99, 233, 0.08);
+  --header-nav-shadow: var(--var-shadow-sm);
+  
+  /* Sleek toggle & login variables */
+  --toggle-bg-light: var(--var-surface-2);
+  --toggle-bg-dark: #2D3748;
+  --toggle-circle-light: #FFFFFF;
+  --toggle-circle-dark: var(--var-primary);
+  --login-button-bg: transparent;
+  --login-button-text: var(--var-primary);
+  --login-button-border: var(--var-primary);
+  --login-button-hover-bg: var(--var-primary);
+  --login-button-hover-text: white;
+}
+
+[data-theme="dark"] {
+  --header-bg: var(--var-surface);
+  --header-border: var(--var-divider);
+  --header-text: var(--var-text);
+  --header-link-hover: var(--var-primary);
+  --header-active-link: var(--var-primary);
+  --header-active-bg: rgba(96, 165, 250, 0.15);
+  --header-nav-shadow: var(--var-shadow-sm);
+  
+  /* Sleek toggle & login variables for dark */
+  --toggle-bg-light: var(--var-primary);
+  --toggle-bg-dark: #1A202C;
+  --toggle-circle-light: #FFFFFF;
+  --toggle-circle-dark: var(--var-primary-light);
+  --login-button-bg: transparent;
+  --login-button-text: var(--var-primary);
+  --login-button-border: var(--var-primary);
+  --login-button-hover-bg: var(--var-primary);
+  --login-button-hover-text: var(--var-surface);
+}
+
+header {
+  height: 70px;
+  background-color: var(--header-bg);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 40px;
+  flex-wrap: wrap;
+  box-shadow: var(--header-nav-shadow);
+  border-bottom: 1px solid var(--header-border);
+  transition: all 0.3s ease;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  backdrop-filter: blur(10px);
+}
+
+/* Container for the navigation links in the center */
+.navCenter {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-grow: 1;
+  gap: 15px;
+  margin-left: 30px;
+}
+
+/* Container for the theme switch and login at the end */
+.navEnd {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+/* Style for all navigation links including the brand */
+.NavLink {
+  color: var(--header-text);
+  text-decoration: none;
+  padding: 8px 14px;
+  white-space: nowrap;
+  transition: all 0.2s ease;
+  border-radius: 6px;
+  font-weight: 500;
+  font-size: 15px;
+  letter-spacing: 0.2px;
+  position: relative;
+}
+
+.NavLink:hover {
+  color: var(--header-link-hover);
+}
+
+.NavLink::after {
+  content: '';
+  position: absolute;
+  width: 0;
+  height: 2px;
+  bottom: 0;
+  left: 50%;
+  background-color: var(--header-active-link);
+  transition: all 0.3s ease;
+  transform: translateX(-50%);
+}
+
+.NavLink:hover::after {
+  width: 60%;
+}
+
+/* Style for active navigation links */
+.activeLink {
+  color: var(--header-active-link) !important;
+  font-weight: 600;
+  background-color: var(--header-active-bg);
+}
+
+.activeLink::after {
+  width: 60%;
+}
+
+/* Additional styles for the brand name */
+.BrandNameText {
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--header-text);
+  margin: 0;
+  padding: 0;
+  letter-spacing: -0.5px;
+}
+
+.BrandName {
+  margin-right: 10px;
+  padding: 0;
+}
+
+.BrandName .BrandNameText {
+  background: linear-gradient(135deg, var(--var-primary), var(--var-secondary));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Elegant Minimal Toggle Switch */
+.themeSwitch {
+  position: relative;
+  width: 52px;
+  height: 26px;
+  background: var(--toggle-bg-light);
+  border-radius: 30px;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  padding: 0;
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+}
+
+.themeSwitch.dark {
+  background: var(--toggle-bg-dark);
+}
+
+.toggleCircle {
+  position: absolute;
+  left: 3px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background-color: var(--toggle-circle-light);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: transparent;
+}
+
+.toggleCircle.dark {
+  left: calc(100% - 23px);
+  background-color: var(--toggle-circle-dark);
+}
+
+.themeSwitch:hover .toggleCircle {
+  box-shadow: 0 0 0 5px rgba(53, 99, 233, 0.1);
+}
+
+.toggleIcon {
+  font-size: 12px;
+  color: transparent;
+}
+
+.toggleCircle.dark .moonIcon {
+  color: white;
+}
+
+.toggleCircle.light .sunIcon {
+  color: #FBBF24;
+}
+
+/* Sophisticated Login Button */
+.Login {
+  position: relative;
+  background: var(--login-button-bg);
+  color: var(--login-button-text);
+  font-weight: 500;
+  border: 1.5px solid var(--login-button-border);
+  border-radius: 6px;
+  padding: 8px 24px;
+  letter-spacing: 0.5px;
+  transition: all 0.25s ease;
+  margin-left: 5px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  z-index: 1;
+}
+
+.Login::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: var(--login-button-hover-bg);
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform 0.4s ease;
+  z-index: -1;
+}
+
+.Login:hover {
+  color: var(--login-button-hover-text);
+  border-color: transparent;
+}
+
+.Login:hover::before {
+  transform: scaleX(1);
+  transform-origin: left;
+}
+
+.Login:active {
+  transform: translateY(1px);
+}
+
+/* Additional header styles for scrolled state */
+header.scrolled {
+  box-shadow: var(--var-shadow-md);
+  height: 65px;
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+  header {
+    height: auto;
+    flex-direction: column;
+    padding: 15px 20px;
+  }
+  
+  .navCenter {
+    margin: 15px 0;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 5px;
+  }
+  
+  .BrandName {
+    margin-bottom: 10px;
+  }
+  
+  .navEnd {
+    margin-top: 10px;
+    width: 100%;
+    justify-content: center;
+  }
+  
+  .NavLink {
+    padding: 8px 10px;
+    font-size: 14px;
+  }
+  
+  .themeSwitch {
+    width: 46px;
+    height: 24px;
+  }
+  
+  .toggleCircle {
+    width: 18px;
+    height: 18px;
+  }
+  
+  .toggleCircle.dark {
+    left: calc(100% - 21px);
+  }
+}
+
+/* Progress Summary and User Menu Styles */
+.userProgressContainer,
+.userMenuContainer {
+    position: relative;
+    margin-left: 15px;
+}
+
+.progressButton {
+    background: none;
+    border: 1.5px solid var(--var-primary);
+    color: var(--var-primary);
+    font-size: 0.9rem;
+    padding: 8px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.2s ease;
+    font-weight: 500;
+}
+
+.progressButton:hover {
+    background-color: var(--var-primary-light, rgba(74, 108, 247, 0.1));
+}
+
+.dropdownIcon {
+    font-size: 0.8rem;
+    transition: transform 0.2s ease;
+}
+
+.dropdownIconOpen {
+    transform: rotate(180deg);
+}
+
+.progressDropdown,
+.userDropdown {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    margin-top: 10px;
+    background-color: var(--header-bg);
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    z-index: 1000;
+    min-width: 280px;
+    max-width: 400px;
+    animation: fadeIn 0.25s ease;
+    border: 1px solid var(--header-border);
+}
+
+.progressDropdown {
+    width: 350px;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.userButton {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background-color: var(--var-surface-2, rgba(74, 108, 247, 0.1));
+    color: var(--var-primary);
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.userButton:hover {
+    background-color: var(--var-primary-light, rgba(74, 108, 247, 0.2));
+    transform: translateY(-2px);
+}
+
+.userMenu {
+    list-style: none;
+    padding: 8px 0;
+    margin: 0;
+}
+
+.userMenu li {
+    padding: 0;
+}
+
+.userMenu a {
+    display: block;
+    padding: 10px 16px;
+    color: var(--header-text);
+    text-decoration: none;
+    transition: all 0.2s ease;
+    font-weight: 500;
+}
+
+.userMenu a:hover {
+    background-color: var(--header-active-bg);
+    color: var(--header-active-link);
+}
+
+.searchForm {
+    display: flex;
+    align-items: center;
+    margin-right: 5px;
+}
+
+/* Mobile menu styles */
+.mobileMenuBtn {
+    display: none;
+    background: none;
+    border: none;
+    color: var(--header-text);
+    font-size: 1.2rem;
+    cursor: pointer;
+    padding: 8px;
+    transition: all 0.2s ease;
+}
+
+.mobileMenuBtn:hover {
+    color: var(--header-link-hover);
+}
+
+.mobileNav {
+    position: fixed;
+    top: 70px;
+    left: 0;
+    right: 0;
+    background-color: var(--header-bg);
+    border-bottom: 1px solid var(--header-border);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    z-index: 999;
+    padding: 16px;
+    animation: slideDown 0.3s ease;
+}
+
+@keyframes slideDown {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.mobileNavList {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.mobileNavItem {
+    margin-bottom: 12px;
+    border-bottom: 1px solid var(--header-border);
+    padding-bottom: 12px;
+}
+
+.mobileNavItem:last-child {
+    margin-bottom: 0;
+    border-bottom: none;
+    padding-bottom: 0;
+}
+
+.mobileNavLink {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--header-text);
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 1.1rem;
+    padding: 10px 8px;
+    border-radius: 6px;
+    transition: all 0.2s ease;
+}
+
+.mobileNavLink:hover,
+.mobileActiveLink {
+    color: var(--header-link-hover);
+    background-color: var(--header-active-bg);
+}
+
+.navIcon {
+    font-size: 1rem;
+}
+
+/* Additional responsive styles */
+@media (max-width: 992px) {
+    .mobileMenuBtn {
+        display: block;
+    }
+    
+    .progressButton {
+        padding: 6px 12px;
+        font-size: 0.85rem;
+    }
+    
+    .searchInput {
+        width: 140px;
+    }
+    
+    .searchInput:focus {
+        width: 180px;
+    }
+    
+    .progressDropdown,
+    .userDropdown {
+        right: -10px;
+    }
+}
+
+@media (max-width: 768px) {
+    .progressButton {
+        display: none;
+    }
+    
+    .searchForm {
+        display: none;
+    }
+    
+    .mobileSearchForm {
+        margin: 16px 0;
+        width: 100%;
+    }
+    
+    .mobileSearchInput {
+        width: 100%;
+        padding: 10px 16px;
+        border-radius: 8px;
+        border: none;
+        background-color: var(--toggle-bg-light);
+        color: var(--header-text);
+        font-size: 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .navEnd {
+        gap: 10px;
+    }
+    
+    .progressDropdown,
+    .userDropdown {
+        width: 280px;
+        right: -10px;
+        max-height: 80vh;
+        overflow-y: auto;
+    }
+}
+
+
+
+

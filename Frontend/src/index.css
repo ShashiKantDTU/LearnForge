@@ -1,0 +1,172 @@
+/* .light {
+  --var-background: sample-color;
+  --var-text: sample-color;
+  --var-primary: sample-color;
+  --var-secondary: sample-color;
+  --var-tertiary: sample-color; 
+}
+
+.dark {
+  --var-background: sample-color;
+  --var-text: sample-color;
+  --var-primary: sample-color;
+  --var-secondary: sample-color;
+  --var-tertiary: sample-color;
+} */
+
+/* Modern, refined color scheme */
+:root {
+  /* Primary palette */
+  --var-primary: #3563E9;         /* Royal blue - primary brand color */
+  --var-primary-light: #6E8AFF;   /* Lighter blue for hover states */
+  --var-primary-dark: #2347C5;    /* Darker blue for active states */
+  --var-primary-rgb: 53, 99, 233; /* RGB values for primary color */
+  
+  /* Secondary palette */
+  --var-secondary: #16A34A;       /* Emerald green - secondary color */
+  --var-secondary-light: #4ADE80; /* Lighter green for hover states */
+  --var-secondary-dark: #15803D;  /* Darker green for active states */
+  --var-secondary-rgb: 76, 175, 80; /* RGB values for secondary color */
+  
+  /* Accent colors */
+  --var-tertiary: #F59E0B;        /* Warm amber - accent color */
+  --var-quaternary: #9333EA;      /* Purple - additional accent */
+  
+  /* Neutral colors */
+  --var-background: #F8FAFC;      /* Off-white background */
+  --var-surface: #FFFFFF;         /* White surface */
+  --var-surface-2: #F1F5F9;       /* Secondary surface */
+  --var-text: #0F172A;            /* Deep navy text */
+  --var-text-secondary: #475569;  /* Slate gray for secondary text */
+  --var-divider: rgba(0, 0, 0, 0.08); /* Subtle divider */
+  
+  /* Feedback colors */
+  --var-success: #22C55E;         /* Green for success messages */
+  --var-error: #EF4444;           /* Red for errors */
+  --var-warning: #F59E0B;         /* Amber for warnings */
+  --var-info: #3B82F6;            /* Blue for info messages */
+  
+  /* Shadow */
+  --var-shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+  --var-shadow-md: 0 4px 6px rgba(0, 0, 0, 0.05), 0 1px 3px rgba(0, 0, 0, 0.1);
+  --var-shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.05), 0 4px 6px rgba(0, 0, 0, 0.05);
+}
+
+/* Dark theme colors */
+[data-theme="dark"] {
+  /* Primary palette */
+  --var-primary: #60A5FA;         /* Brighter blue for dark mode */
+  --var-primary-light: #93C5FD;   /* Lighter blue for hover states */
+  --var-primary-dark: #3B82F6;    /* Slightly darker blue for active states */
+  --var-primary-rgb: 96, 165, 250; /* RGB values for primary color in dark mode */
+  
+  /* Secondary palette */
+  --var-secondary: #4ADE80;       /* Brighter green for dark mode */
+  --var-secondary-light: #86EFAC; /* Lighter green for hover states */
+  --var-secondary-dark: #22C55E;  /* Darker green for active states */
+  --var-secondary-rgb: 74, 222, 128; /* RGB values for secondary color in dark mode */
+  
+  /* Accent colors */
+  --var-tertiary: #FBBF24;        /* Brighter amber for dark mode */
+  --var-quaternary: #A855F7;      /* Brighter purple for dark mode */
+  
+  /* Neutral colors */
+  --var-background: #0F172A;      /* Deep navy background */
+  --var-surface: #1E293B;         /* Slate surface */
+  --var-surface-2: #334155;       /* Secondary surface */
+  --var-text: #F8FAFC;            /* Off-white text */
+  --var-text-secondary: #CBD5E1;  /* Light slate for secondary text */
+  --var-divider: rgba(255, 255, 255, 0.08); /* Subtle divider */
+  
+  /* Feedback colors */
+  --var-success: #4ADE80;         /* Brighter green for success */
+  --var-error: #F87171;           /* Lighter red for errors */
+  --var-warning: #FBBF24;         /* Brighter amber for warnings */
+  --var-info: #60A5FA;            /* Brighter blue for info */
+  
+  /* Shadow */
+  --var-shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.2);
+  --var-shadow-md: 0 4px 6px rgba(0, 0, 0, 0.2), 0 1px 3px rgba(0, 0, 0, 0.3);
+  --var-shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.2), 0 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+/* Base styles */
+body {
+  margin: 0;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: var(--var-background);
+  color: var(--var-text);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+/* Common utility classes */
+.card {
+  background-color: var(--var-surface);
+  border-radius: 8px;
+  box-shadow: var(--var-shadow-md);
+  transition: box-shadow 0.3s ease;
+}
+
+.card:hover {
+  box-shadow: var(--var-shadow-lg);
+}
+
+.divider {
+  height: 1px;
+  background-color: var(--var-divider);
+  width: 100%;
+  margin: 16px 0;
+}
+
+/* Button base styles */
+.btn {
+  border-radius: 6px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 16px;
+  border: none;
+}
+
+.btn-primary {
+  background-color: var(--var-primary);
+  color: white;
+}
+
+.btn-primary:hover {
+  background-color: var(--var-primary-light);
+}
+
+.btn-primary:active {
+  background-color: var(--var-primary-dark);
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  overflow-x: hidden;
+  overflow-y: auto !important;
+}
+
+#root {
+  width: 100%;
+  height: 100%;
+  overflow-x: hidden;
+  overflow-y: auto; /* Allow vertical scrolling */
+}
+
+
+
