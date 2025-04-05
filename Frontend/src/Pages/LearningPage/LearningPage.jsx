@@ -11,6 +11,7 @@ import React from 'react';
 import CourseProgressManager from '../../utils/CourseProgressManager';
 import AIChatAssistant from '../../components/AIChatAssistant/AIChatAssistant';
 import MarkdownRenderer from '../../components/MarkdownRender/MarkdownRenderer';
+import NotifyMeButton from '../../components/Notifications/NotifyMeButton';
 
 // Utility function for fetching with retry
 const fetchWithRetry = async (url, options, maxRetries = 3, retryDelay = 1000) => {
@@ -97,6 +98,8 @@ const LearningPage = () => {
     });
     const [activeHeadings, setActiveHeadings] = useState([]);
     const [isChatOpen, setIsChatOpen] = useState(false);
+    const [initialLoadProgress, setInitialLoadProgress] = useState(0);
+    const progressIntervalRef = useRef(null);
     
     const contentRef = useRef(null);
     const navigate = useNavigate();
@@ -109,6 +112,16 @@ const LearningPage = () => {
     
     // Check if the current section is already marked as completed
     const isSectionCompleted = progressData.completed.includes(parseInt(sectionId));
+    
+    // Cleanup any intervals on unmount
+    useEffect(() => {
+        return () => {
+            if (progressIntervalRef.current) {
+                clearInterval(progressIntervalRef.current);
+                progressIntervalRef.current = null;
+            }
+        };
+    }, []);
     
     // Fetch the course data on component mount or when parameters change
     useEffect(() => {
@@ -257,6 +270,21 @@ const LearningPage = () => {
                 };
             });
             
+            // Clear any existing interval
+            if (progressIntervalRef.current) {
+                clearInterval(progressIntervalRef.current);
+            }
+            
+            // Start simulated progress for visual feedback
+            setInitialLoadProgress(0);
+            progressIntervalRef.current = setInterval(() => {
+                setInitialLoadProgress(prev => {
+                    // Simulate progress up to 95% (real completion will hit 100%)
+                    const newProgress = prev + (Math.random() * 1.5);
+                    return newProgress > 95 ? 95 : newProgress;
+                });
+            }, 3000); // Update every 3 seconds
+            
             // Prepare topic data by combining course and section information
             const topicData = {
                 ...section,
@@ -307,6 +335,12 @@ const LearningPage = () => {
                 console.log(`Received text content from API. Content type: ${contentType}`);
             }
             
+            // Final update when complete
+            if (progressIntervalRef.current) {
+                clearInterval(progressIntervalRef.current);
+                progressIntervalRef.current = null;
+            }
+            setInitialLoadProgress(100);
             console.log("Setting final section state with content loaded");
             
             setCurrentSection({
@@ -317,6 +351,11 @@ const LearningPage = () => {
             });
             
         } catch (err) {
+            // Clear interval on error
+            if (progressIntervalRef.current) {
+                clearInterval(progressIntervalRef.current);
+                progressIntervalRef.current = null;
+            }
             console.error('Error fetching section content:', err);
             setError(`Failed to load content for "${section.topic_name}": ${err.message}`);
             setCurrentSection({
@@ -618,14 +657,35 @@ const LearningPage = () => {
                                                     <span>Tailoring content to your skill level</span>
                                                 </div>
                                             </div>
+                                            
+                                            {/* Add progress bar */}
+                                            <div className={styles.progressContainer}>
+                                                <div className={styles.progressBar}>
+                                                    <div 
+                                                        className={styles.progressFill}
+                                                        style={{ width: `${initialLoadProgress}%` }}
+                                                    />
+                                                </div>
+                                                <div className={styles.progressText}>
+                                                    {Math.round(initialLoadProgress)}% - Generating content...
+                                                </div>
+                                            </div>
+                                            
                                             <div className={styles.generationTimeWrapper}>
                                                 <p className={styles.generationTime}>
                                                     <FaClock className={styles.clockIcon} /> 
-                                                    First-time content generation may take up to 2 minutes
+                                                    First-time content generation may take up to 5 minutes
                                                 </p>
                                                 <p className={styles.generationNote}>
                                                     Once created, sections load instantly on future visits
                                                 </p>
+                                                
+                                                {/* Add Notify Me button */}
+                                                <NotifyMeButton 
+                                                    courseName={courseName}
+                                                    sectionId={sectionId}
+                                                    topicName={currentSection?.topic_name}
+                                                />
                                             </div>
                                         </>
                                     ) : (

@@ -2,22 +2,24 @@ import React, { useState, useEffect, useRef, useCallback } from 'react';
 import styles from './AIChatAssistant.module.css';
 import { 
     FaRobot, FaUserCircle, FaPaperPlane, FaTimes, 
-    FaAngleDown, FaSpinner, FaTrash, FaHistory
+    FaAngleDown, FaSpinner, FaTrash, FaHistory,
+    FaLightbulb, FaRegLightbulb, FaGraduationCap, FaComments, FaCommentDots,
+    FaExpandAlt, FaCompressAlt
 } from 'react-icons/fa';
 
 /**
- * AI Chat Assistant Component
+ * AI Learning Tutor Component - Completely redesigned
  * 
  * @param {Object} props
- * @param {string} props.contextTopic - The current topic or section being viewed (for context-aware responses)
- * @param {Function} props.onSendMessage - Required callback when user sends a message
- * @param {boolean} props.isOpen - Optional control for chat panel visibility
- * @param {Function} props.onToggleChat - Optional callback when chat is opened/closed
- * @param {Array} props.initialMessages - Optional initial messages for the chat
- * @param {Array} props.suggestedQuestions - Optional suggested questions to display
- * @param {string} props.welcomeMessage - Optional custom welcome message
- * @param {number} props.historyLength - Optional number of recent messages to include for context (default: 4)
- * @param {string} props.chatId - Optional unique identifier for this chat (defaults to courseName-sectionId if not provided)
+ * @param {string} props.contextTopic - The current topic or section being viewed
+ * @param {Function} props.onSendMessage - Callback when user sends a message
+ * @param {boolean} props.isOpen - Control for chat panel visibility
+ * @param {Function} props.onToggleChat - Callback when chat is opened/closed
+ * @param {Array} props.initialMessages - Initial messages for the chat
+ * @param {Array} props.suggestedQuestions - Suggested questions to display
+ * @param {string} props.welcomeMessage - Custom welcome message
+ * @param {number} props.historyLength - Number of recent messages for context
+ * @param {string} props.chatId - Unique identifier for this chat
  */
 const AIChatAssistant = ({
     contextTopic,
@@ -35,7 +37,7 @@ const AIChatAssistant = ({
     historyLength = 4,
     chatId
 }) => {
-    // Generate a consistent chat ID based on context or use provided one
+    // Generate a consistent chat ID for localStorage
     const derivedChatId = chatId || `chat-${contextTopic ? contextTopic.replace(/\s+/g, '-').toLowerCase() : 'assistant'}`;
     
     // State management
@@ -70,12 +72,76 @@ const AIChatAssistant = ({
     const [userInput, setUserInput] = useState('');
     const [isTyping, setIsTyping] = useState(false);
     
+    // Check if the system is using dark mode
+    const [isDarkMode, setIsDarkMode] = useState(
+        window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+    );
+    
+    // Listen for changes in the system's color scheme preference
+    useEffect(() => {
+        const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+        
+        const handleChange = (e) => {
+            setIsDarkMode(e.matches);
+        };
+        
+        // Add listener for theme changes
+        if (mediaQuery.addEventListener) {
+            mediaQuery.addEventListener('change', handleChange);
+        } else {
+            // Fallback for older browsers
+            mediaQuery.addListener(handleChange);
+        }
+        
+        // Clean up
+        return () => {
+            if (mediaQuery.removeEventListener) {
+                mediaQuery.removeEventListener('change', handleChange);
+            } else {
+                // Fallback for older browsers
+                mediaQuery.removeListener(handleChange);
+            }
+        };
+    }, []);
+    
+    // Also check for data-theme attribute on document
+    useEffect(() => {
+        const checkDocumentTheme = () => {
+            const documentTheme = document.documentElement.getAttribute('data-theme');
+            if (documentTheme) {
+                setIsDarkMode(documentTheme === 'dark');
+            }
+        };
+        
+        // Check initially
+        checkDocumentTheme();
+        
+        // Set up a mutation observer to detect theme changes
+        const observer = new MutationObserver((mutations) => {
+            mutations.forEach((mutation) => {
+                if (mutation.attributeName === 'data-theme') {
+                    checkDocumentTheme();
+                }
+            });
+        });
+        
+        observer.observe(document.documentElement, { attributes: true });
+        
+        return () => {
+            observer.disconnect();
+        };
+    }, []);
+    
     // Refs
     const chatMessagesRef = useRef(null);
     const chatInputRef = useRef(null);
+    const messagesEndRef = useRef(null);
     
     // Determine if chat is controlled externally or internally
     const isChatOpen = externalIsOpen !== undefined ? externalIsOpen : internalIsOpen;
+    
+    // Check if there are any user messages in the conversation history
+    const hasUserMessages = messages.some(message => message.sender === 'user');
     
     // Save messages to localStorage whenever they change
     useEffect(() => {
@@ -106,7 +172,7 @@ const AIChatAssistant = ({
         if (newState) {
             setTimeout(() => {
                 chatInputRef.current?.focus();
-            }, 300);
+            }, 400); // Increased delay to match the new animation
         }
     }, [isChatOpen, externalIsOpen, onToggleChat]);
     
@@ -136,85 +202,70 @@ const AIChatAssistant = ({
     }, [welcomeMessage, derivedChatId]);
     
     // Handle sending a message
-    const handleSendMessage = useCallback(() => {
-        if (!userInput.trim() || !onSendMessage) return;
+    const handleSendMessage = (suggestedQuestion = null) => {
+        const messageText = suggestedQuestion || userInput.trim();
         
-        // Create new user message
-        const newUserMessage = {
+        if (!messageText) return;
+        
+        // Add user message
+        const userMessage = {
             id: Date.now(),
             sender: 'user',
-            content: userInput.trim(),
+            content: messageText,
             timestamp: new Date()
         };
         
-        // Add user message to chat
-        setMessages(prev => [...prev, newUserMessage]);
+        const newMessages = [...messages, userMessage];
+        setMessages(newMessages);
         setUserInput('');
         
-        // Show typing indicator
+        // Simulate AI typing
         setIsTyping(true);
         
-        // Get recent conversation history for context
-        const recentMessages = [...messages.slice(-historyLength), newUserMessage]
-            .filter(msg => msg.sender !== 'system') // Exclude system messages
-            .map(msg => ({
-                role: msg.sender === 'user' ? 'user' : 'assistant',
-                content: msg.content
-            }));
-        
-        // Get response from external handler
-        try {
-            // Pass the message and conversation history to the external handler
-            const responsePromise = onSendMessage(
-                newUserMessage.content, 
-                contextTopic,
-                recentMessages
-            );
-            
-            // If it returns a promise, handle it
-            if (responsePromise && typeof responsePromise.then === 'function') {
-                responsePromise
-                    .then(response => {
-                        setMessages(prev => [...prev, {
-                            id: Date.now(),
-                            sender: 'ai',
-                            content: response,
-                            timestamp: new Date()
-                        }]);
-                    })
-                    .catch(error => {
-                        console.error('Error getting response:', error);
-                        setMessages(prev => [...prev, {
-                            id: Date.now(),
-                            sender: 'ai',
-                            content: "Sorry, I couldn't process your request. Please try again.",
-                            timestamp: new Date()
-                        }]);
-                    })
-                    .finally(() => {
-                        setIsTyping(false);
-                    });
-            } else {
-                // If not a promise, treat as synchronous response
-                setMessages(prev => [...prev, {
+        // Call the sendMessage function with context if it exists
+        if (onSendMessage) {
+            onSendMessage(messageText, contextTopic, [...messages.slice(-historyLength), userMessage]
+                .filter(msg => msg.sender !== 'system') // Exclude system messages
+                .map(msg => ({
+                    role: msg.sender === 'user' ? 'user' : 'assistant',
+                    content: msg.content
+                }))
+            )
+            .then(response => {
+                const aiMessage = {
                     id: Date.now(),
                     sender: 'ai',
-                    content: responsePromise || "No response available",
+                    content: response,
                     timestamp: new Date()
-                }]);
+                };
+                setMessages(prev => [...prev, aiMessage]);
                 setIsTyping(false);
-            }
-        } catch (error) {
-            console.error('Error in message handler:', error);
-            setMessages(prev => [...prev, {
-                id: Date.now(),
-                sender: 'ai',
-                content: "An error occurred. Please try again.",
-                timestamp: new Date()
-            }]);
-            setIsTyping(false);
+            })
+            .catch(error => {
+                console.error("Error sending message:", error);
+                const errorMessage = {
+                    id: Date.now(),
+                    sender: 'system',
+                    content: "I'm sorry, I encountered an error. Please try again later.",
+                    timestamp: new Date()
+                };
+                setMessages(prev => [...prev, errorMessage]);
+                setIsTyping(false);
+            });
+        } else {
+            // Simulate response for demo if no onSendMessage provided
+            setTimeout(() => {
+                const aiMessage = {
+                    id: Date.now(),
+                    sender: 'ai',
+                    content: `This is a simulated response to: "${messageText}"`,
+                    timestamp: new Date()
+                };
+                setMessages(prev => [...prev, aiMessage]);
+                setIsTyping(false);
+            }, 1500);
         }
-    }, [userInput, contextTopic, onSendMessage, messages, historyLength]);
+    };
     
     // Scroll to bottom of chat when new messages arrive
     useEffect(() => {
@@ -223,18 +274,19 @@ const AIChatAssistant = ({
         }
     }, [messages, isChatOpen]);
     
+    // Scroll to bottom when messages change
+    useEffect(() => {
+        if (messagesEndRef.current) {
+            messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
+        }
+    }, [messages]);
+    
     // Handle Enter key for sending messages
     const handleKeyPress = (e) => {
         if (e.key === 'Enter' && !e.shiftKey) {
             e.preventDefault();
             handleSendMessage();
         }
-    };
-    
-    // Handle clicking on a suggested question
-    const handleSuggestionClick = (question) => {
-        setUserInput(question);
-        chatInputRef.current?.focus();
     };
     
     // Format timestamp for messages
@@ -245,30 +297,77 @@ const AIChatAssistant = ({
         });
     };
     
+    // New state for expanded view
+    const [isExpanded, setIsExpanded] = useState(false);
+    
+    // Get viewport dimensions
+    const updateViewportDimensions = useCallback(() => {
+        // This effect will update the CSS variable for the header height if needed
+        const headerHeight = 
+            getComputedStyle(document.documentElement).getPropertyValue('--header-height') || 
+            '80px';
+        
+        document.documentElement.style.setProperty('--tutor-header-height', headerHeight);
+    }, []);
+    
+    // Add resize listener
+    useEffect(() => {
+        // Initial update
+        updateViewportDimensions();
+        
+        // Listen for window resize events
+        window.addEventListener('resize', updateViewportDimensions);
+        
+        return () => {
+            window.removeEventListener('resize', updateViewportDimensions);
+        };
+    }, [updateViewportDimensions]);
+    
+    // Toggle expanded view
+    const toggleExpandedView = useCallback((e) => {
+        e.stopPropagation();
+        setIsExpanded(prev => !prev);
+    }, []);
+    
     return (
         <>
             {/* Chat Button */}
             <button 
                 className={`${styles.chatButton} ${isChatOpen ? styles.chatButtonActive : ''}`}
                 onClick={toggleChat}
-                aria-label={isChatOpen ? "Close AI assistant" : "Open AI assistant"}
+                aria-label={isChatOpen ? "Close AI tutor" : "Open AI tutor"}
             >
-                {isChatOpen ? <FaTimes /> : <><FaRobot /> <span>AI Tutor</span></>}
+                <div className={`${styles.buttonContent} ${isChatOpen ? styles.hidden : ''}`}>
+                    <FaGraduationCap />
+                </div>
+                <div className={`${styles.buttonContent} ${!isChatOpen ? styles.hidden : ''}`}>
+                    <FaTimes />
+                </div>
             </button>
             
             {/* Chat Panel */}
-            <div className={`${styles.chatPanel} ${isChatOpen ? styles.chatPanelOpen : ''}`}>
+            <div className={`${styles.chatPanel} ${isChatOpen ? styles.chatPanelOpen : ''} ${isExpanded ? styles.chatPanelExpanded : ''}`}>
                 <div className={styles.chatHeader}>
                     <div className={styles.chatHeaderInfo}>
-                        <FaRobot className={styles.chatHeaderIcon} />
+                        <div className={styles.chatHeaderIcon}>
+                            <FaGraduationCap />
+                        </div>
                         <div className={styles.chatHeaderText}>
-                            <h3>AI Learning Assistant</h3>
-                            <p>Ask questions about {contextTopic || 'this course'}</p>
+                            <h3>AI Learning Tutor</h3>
+                            <p>Studying: {contextTopic || 'This course'}</p>
                         </div>
                     </div>
                     <div className={styles.chatHeaderActions}>
                         <button 
-                            className={styles.clearChatButton}
+                            className={styles.headerButton}
+                            onClick={toggleExpandedView}
+                            aria-label={isExpanded ? "Compress chat" : "Expand chat"}
+                            title={isExpanded ? "Compress window" : "Expand window"}
+                        >
+                            {isExpanded ? <FaCompressAlt /> : <FaExpandAlt />}
+                        </button>
+                        <button 
+                            className={styles.headerButton}
                             onClick={clearChatHistory}
                             aria-label="Clear chat history"
                             title="Clear conversation history"
@@ -276,16 +375,16 @@ const AIChatAssistant = ({
                             <FaTrash />
                         </button>
                         <button 
-                            className={styles.chatMinimize}
+                            className={styles.headerButton}
                             onClick={toggleChat}
                             aria-label="Minimize chat"
                         >
-                            <FaAngleDown />
+                            <FaTimes />
                         </button>
                     </div>
                 </div>
                 
-                <div className={styles.chatMessages} ref={chatMessagesRef}>
+                <div className={`${styles.chatMessages} ${(suggestedQuestions?.length > 0 && !hasUserMessages) ? styles.chatMessagesWithSuggestions : ''}`} ref={chatMessagesRef}>
                     {messages.map(message => (
                         <div 
                             key={message.id}
@@ -328,13 +427,31 @@ const AIChatAssistant = ({
                             </div>
                         </div>
                     )}
+                    
+                    <div ref={messagesEndRef} />
                 </div>
+                
+                {suggestedQuestions?.length > 0 && !hasUserMessages && (
+                    <div className={styles.chatSuggestions}>
+                        <p><FaLightbulb /> Try asking:</p>
+                        <div className={styles.suggestionBubbles}>
+                            {suggestedQuestions.map((question, index) => (
+                                <button 
+                                    key={index} 
+                                    onClick={() => handleSendMessage(question)}
+                                >
+                                    {question}
+                                </button>
+                            ))}
+                        </div>
+                    </div>
+                )}
                 
                 <div className={styles.chatInputArea}>
                     <input
                         type="text"
                         className={styles.chatInput}
-                        placeholder="Type your question here..."
+                        placeholder="Ask me about this topic..."
                         value={userInput}
                         onChange={(e) => setUserInput(e.target.value)}
                         onKeyPress={handleKeyPress}
@@ -347,29 +464,16 @@ const AIChatAssistant = ({
                         disabled={!userInput.trim() || isTyping}
                         aria-label="Send message"
                     >
-                        {isTyping ? <FaSpinner className={styles.loadingIcon} /> : <FaPaperPlane />}
+                        {isTyping ? 
+                            <FaSpinner className={styles.loadingIcon} /> : 
+                            <FaPaperPlane />
+                        }
                     </button>
                 </div>
                 
-                {suggestedQuestions?.length > 0 && (
-                    <div className={styles.chatSuggestions}>
-                        <p>Try asking:</p>
-                        <div className={styles.suggestionBubbles}>
-                            {suggestedQuestions.map((question, index) => (
-                                <button
-                                    key={index}
-                                    onClick={() => handleSuggestionClick(question)}
-                                >
-                                    {question}
-                                </button>
-                            ))}
-                        </div>
-                    </div>
-                )}
-                
                 {messages.length > 3 && (
                     <div className={styles.contextIndicator}>
-                        <FaHistory /> Conversation context is active
+                        <FaHistory /> AI has context from your previous messages
                     </div>
                 )}
             </div>

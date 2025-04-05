@@ -5,6 +5,7 @@ import { FaMoon, FaSun, FaBook, FaGraduationCap, FaInfoCircle, FaSearch, FaUser,
 import { NavLink, Link } from 'react-router-dom';
 import CourseProgressSummary from '../CourseProgressSummary/CourseProgressSummary';
 import CourseProgressManager from '../../utils/CourseProgressManager';
+import NotificationBell from '../Notifications/NotificationBell';
 
 const Header = () => {
     const { theme, toggleTheme } = useContext(ThemeContext);   
@@ -112,6 +113,8 @@ const Header = () => {
                 {/* Theme switch and login at end */}
                 <div className={styles.navEnd}>
                     
+                    {/* Notification Bell Component */}
+                    <NotificationBell />
                     
                     {/* My Courses & Progress Button - Only show if user has course progress */}
                     {hasCourseProgress && (

@@ -1,40 +1,34 @@
-.MainContainer {
+/* Base container styles */
+.container {
   width: 100%;
   min-height: 100vh;
   background-color: var(--var-background);
-  padding: 40px 20px 80px;
+  padding: 2rem 1.5rem 4rem;
   overflow-x: hidden;
+  color: var(--var-text);
 }
 
-/* Hero Section */
+/* Hero section */
 .hero {
   text-align: center;
-  margin-bottom: 50px;
-  padding-top: 40px;
+  margin-bottom: 3rem;
+  padding-top: 2rem;
   position: relative;
-}
-
-.hero::after {
-  content: '';
-  position: absolute;
-  bottom: -20px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 100px;
-  height: 4px;
-  background: linear-gradient(135deg, var(--var-primary), var(--var-secondary));
-  border-radius: 2px;
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .heroTitle {
-  font-size: clamp(2.2rem, 5vw, 3.2rem);
+  font-size: clamp(2.2rem, 5vw, 3.5rem);
   font-weight: 800;
-  margin-bottom: 20px;
+  margin-bottom: 1.25rem;
   background: linear-gradient(135deg, var(--var-primary), var(--var-secondary));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
-  letter-spacing: -0.5px;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
 }
 
 .heroSubtitle {
@@ -43,35 +37,39 @@
   max-width: 650px;
   margin: 0 auto;
   line-height: 1.5;
+  font-weight: 400;
 }
 
-/* Search */
+/* Search section */
 .searchContainer {
-  max-width: 800px;
-  margin: 0 auto 50px;
+  max-width: 780px;
+  margin: 0 auto 3.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
 }
 
 .searchWrapper {
   display: flex;
   align-items: stretch;
   position: relative;
-  border-radius: 16px;
-  box-shadow: var(--var-shadow-md), 0 5px 20px rgba(var(--var-primary-rgb), 0.1);
+  border-radius: 1rem;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
   background-color: var(--var-surface);
   overflow: hidden;
-  border: 1px solid rgba(var(--var-divider-rgb), 0.5);
-  transition: all 0.3s ease;
+  border: 1px solid rgba(var(--var-divider-rgb), 0.2);
+  transition: all 0.25s ease-in-out;
 }
 
 .searchWrapper:focus-within {
-  box-shadow: var(--var-shadow-lg), 0 8px 30px rgba(var(--var-primary-rgb), 0.15);
-  border-color: var(--var-primary);
+  box-shadow: 0 6px 24px rgba(var(--var-primary-rgb), 0.15);
+  border-color: rgba(var(--var-primary-rgb), 0.5);
   transform: translateY(-2px);
 }
 
 .searchIcon {
   position: absolute;
-  left: 22px;
+  left: 1.25rem;
   top: 50%;
   transform: translateY(-50%);
   font-size: 1.1rem;
@@ -79,9 +77,9 @@
   opacity: 0.8;
 }
 
-.searchContainer input {
+.searchInput {
   flex: 1;
-  padding: 20px 20px 20px 55px;
+  padding: 1.25rem 1.25rem 1.25rem 3.25rem;
   font-size: 1.05rem;
   border: none;
   background-color: transparent;
@@ -89,51 +87,78 @@
   width: 100%;
 }
 
-.searchContainer input::placeholder {
+.searchInput::placeholder {
   color: var(--var-text-secondary);
   opacity: 0.7;
 }
 
-.searchContainer input:focus {
+.searchInput:focus {
   outline: none;
 }
 
 .searchButton {
-  background: linear-gradient(135deg, var(--var-primary), var(--var-primary-light));
+  background: linear-gradient(135deg, var(--var-primary), var(--var-primary-dark));
   color: white;
   border: none;
-  padding: 0 32px;
+  padding: 0 2rem;
   font-weight: 600;
   font-size: 1rem;
   cursor: pointer;
-  transition: all 0.3s ease;
-  letter-spacing: 0.3px;
+  transition: all 0.2s ease;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
 }
 
-.searchButton:hover {
-  background: linear-gradient(135deg, var(--var-primary-light), var(--var-primary));
-  box-shadow: inset 0 0 0 100px rgba(255, 255, 255, 0.1);
+.searchButton:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
 }
 
-/* Trending Courses Section */
-.TrendingCourses {
+.searchNotice {
+  font-size: 0.95rem;
+  color: var(--var-text-secondary);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+  padding-left: 0.5rem;
+}
+
+.resetButton {
+  background: none;
+  border: none;
+  color: var(--var-primary);
+  font-weight: 600;
+  cursor: pointer;
+  font-size: 0.95rem;
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.25rem;
+  transition: background-color 0.2s ease;
+}
+
+.resetButton:hover {
+  background-color: rgba(var(--var-primary-rgb), 0.1);
+}
+
+/* Courses section */
+.coursesSection {
   max-width: 1300px;
   margin: 0 auto;
   background-color: var(--var-surface);
-  border-radius: 24px;
-  padding: 40px;
-  box-shadow: var(--var-shadow-md);
+  border-radius: 1.5rem;
+  padding: 2.5rem;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.06);
   position: relative;
   overflow: hidden;
 }
 
-.TrendingCourses::before {
+.coursesSection::before {
   content: '';
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
-  height: 6px;
+  height: 5px;
   background: linear-gradient(90deg, var(--var-primary), var(--var-secondary), var(--var-primary));
   background-size: 200% 100%;
   animation: gradientMove 8s ease infinite;
@@ -145,26 +170,26 @@
   100% { background-position: 0% 50%; }
 }
 
-.TrendingCoursesHeader {
+.sectionHeader {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 40px;
+  margin-bottom: 2rem;
   flex-wrap: wrap;
-  gap: 20px;
-  position: relative;
+  gap: 1rem;
 }
 
-.TrendingCoursesHeader h2 {
-  font-size: clamp(1.8rem, 3vw, 2.4rem);
-  font-weight: 800;
-  color: var(--var-text);
-  position: relative;
-  padding-bottom: 12px;
-  letter-spacing: -0.5px;
+.titleWrapper {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 0.75rem;
+}
+
+.titleWrapper h2 {
+  font-size: clamp(1.6rem, 3vw, 2.2rem);
+  font-weight: 800;
+  color: var(--var-text);
+  letter-spacing: -0.02em;
 }
 
 .courseCount {
@@ -175,674 +200,490 @@
   color: white;
   font-size: 1rem;
   font-weight: 700;
-  height: 32px;
-  min-width: 32px;
-  padding: 0 10px;
-  border-radius: 16px;
-  margin-left: 5px;
+  height: 2rem;
+  min-width: 2rem;
+  padding: 0 0.75rem;
+  border-radius: 1rem;
   box-shadow: 0 4px 10px rgba(var(--var-primary-rgb), 0.25);
-  transition: all 0.3s ease;
-  position: relative;
-  top: -5px;
 }
 
-.TrendingCoursesHeader h2::after {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 60px;
-  height: 4px;
-  background: linear-gradient(to right, var(--var-primary), var(--var-secondary));
-  border-radius: 2px;
-}
-
-.filtersContainer {
+.filterControls {
   display: flex;
-  gap: 15px;
+  gap: 1rem;
   align-items: center;
 }
 
-.filters {
+.filterToggle {
   display: flex;
-  gap: 12px;
-  flex-wrap: wrap;
-  padding: 16px 20px;
-  background-color: rgba(var(--var-primary-rgb), 0.05);
-  border-radius: 12px;
-  margin-bottom: 25px;
-  border: 1px solid rgba(var(--var-primary-rgb), 0.1);
-  animation: fadeIn 0.3s ease forwards;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.25rem;
+  border-radius: 0.75rem;
+  border: 1px solid rgba(var(--var-divider-rgb), 0.3);
+  background-color: var(--var-surface);
+  color: var(--var-text);
+  font-weight: 600;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
 }
 
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(-10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+.filterToggle svg {
+  font-size: 0.9rem;
+  opacity: 0.8;
+}
+
+/* Filters panel */
+.filtersPanel {
+  overflow: hidden;
+}
+
+.filterOptions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  background-color: rgba(var(--var-primary-rgb), 0.04);
+  border-radius: 1rem;
+  border: 1px solid rgba(var(--var-primary-rgb), 0.08);
+}
+
+.filterGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  flex-grow: 1;
+  min-width: 200px;
+}
+
+.filterGroup label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--var-text-secondary);
+  padding-left: 0.25rem;
+}
+
+.selectWrapper {
+  position: relative;
 }
 
 .select {
-  padding: 14px 20px;
-  border-radius: 12px;
-  border: 1px solid rgba(var(--var-divider-rgb), 0.7);
+  width: 100%;
+  padding: 0.9rem 1rem;
+  border-radius: 0.75rem;
+  border: 1px solid rgba(var(--var-divider-rgb), 0.3);
   background-color: var(--var-surface);
   color: var(--var-text);
   font-size: 0.95rem;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all 0.2s ease;
   appearance: none;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%236b7280'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
-  background-repeat: no-repeat;
-  background-position: right 12px center;
-  background-size: 18px;
-  padding-right: 38px;
+  padding-right: 2.5rem;
   font-weight: 500;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
 .select:focus {
   outline: none;
   border-color: var(--var-primary);
-  box-shadow: 0 0 0 3px rgba(var(--var-primary-rgb), 0.1);
+  box-shadow: 0 0 0 3px rgba(var(--var-primary-rgb), 0.15);
 }
 
-.filterButton {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 14px 22px;
-  border-radius: 12px;
-  background-color: var(--var-primary);
-  color: white;
-  border: none;
-  cursor: pointer;
-  font-weight: 600;
-  transition: all 0.3s ease;
-  box-shadow: 0 4px 8px rgba(var(--var-primary-rgb), 0.2);
-}
-
-.filterButton:hover {
-  background-color: var(--var-primary-light);
-  transform: translateY(-2px);
-  box-shadow: 0 6px 12px rgba(var(--var-primary-rgb), 0.3);
-}
-
-.filterButton:active {
-  transform: translateY(0);
-  box-shadow: 0 2px 4px rgba(var(--var-primary-rgb), 0.2);
-}
-
-.filterButton:disabled {
-  opacity: 0.7;
-  cursor: not-allowed;
-  transform: none;
-  box-shadow: none;
-  background-color: var(--var-surface-3);
-  color: var(--var-text-secondary);
-}
-
-/* Loading, Error, and No Results */
-.loadingContainer, .errorContainer, .noResultsContainer {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 60px 20px;
-  text-align: center;
-  background-color: var(--var-surface);
-  border-radius: 16px;
-  border: 1px solid rgba(var(--var-divider-rgb), 0.7);
-  margin: 40px 0;
-  box-shadow: var(--var-shadow-sm);
-}
-
-.spinnerLarge {
-  font-size: 2.5rem;
-  color: var(--var-primary);
-  animation: spin 1s linear infinite;
-  margin-bottom: 25px;
-  filter: drop-shadow(0 2px 5px rgba(var(--var-primary-rgb), 0.2));
-}
-
-.spinner {
-  animation: spin 1s linear infinite;
-}
-
-@keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
-}
-
-.errorContainer p {
-  color: #e53e3e;
-  margin-bottom: 20px;
-  font-weight: 500;
-}
-
-.retryButton {
-  background: linear-gradient(135deg, var(--var-primary), var(--var-primary-light));
-  color: white;
-  border: none;
-  padding: 12px 25px;
-  border-radius: 12px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  font-weight: 600;
-  box-shadow: 0 4px 8px rgba(var(--var-primary-rgb), 0.2);
-}
-
-.retryButton:hover {
-  box-shadow: 0 6px 12px rgba(var(--var-primary-rgb), 0.3);
-  transform: translateY(-2px);
-  background: linear-gradient(135deg, var(--var-primary-light), var(--var-primary));
-}
-
-.noResultsContainer {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 60px 20px;
-  text-align: center;
-  background-color: var(--var-surface);
-  border-radius: 16px;
-  border: 1px solid rgba(var(--var-divider-rgb), 0.7);
-  margin: 40px 0;
-  box-shadow: var(--var-shadow-sm);
-}
-
-.noResultsIcon {
-  font-size: 4rem;
-  margin-bottom: 20px;
-  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.1));
-}
-
-.noResultsContainer h3 {
-  font-size: 1.6rem;
-  margin-bottom: 16px;
-  color: var(--var-text);
-  font-weight: 700;
-}
-
-.noResultsContainer p {
-  color: var(--var-text-secondary);
-  font-size: 1.1rem;
-  max-width: 500px;
-  margin: 0 auto 20px;
-  line-height: 1.5;
-}
-
-.noResultsContainer .retryButton {
-  margin-top: 10px;
-}
-
-/* Course Grid */
-.courseGrid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-  gap: 30px;
-  margin-top: 40px;
-  position: relative;
-  padding: 5px;
-}
-
-.courseGrid::before {
-  content: '';
+.selectIcon {
   position: absolute;
-  top: -20px;
-  left: 0;
-  width: 100%;
-  height: calc(100% + 40px);
-  background-image: radial-gradient(rgba(var(--var-primary-rgb), 0.03) 1px, transparent 1px);
-  background-size: 20px 20px;
-  z-index: 0;
-  opacity: 0.8;
+  right: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 0.8rem;
+  color: var(--var-text-secondary);
   pointer-events: none;
 }
 
-/* Apply a staggered layout for odd-numbered cards in larger screens */
-@media (min-width: 1200px) {
-  .courseGrid > div:nth-child(odd) {
-    transform: translateY(10px);
-  }
-
-  .courseGrid > div:hover {
-    transform: translateY(-5px) !important;
-  }
-}
-
-.courseCard {
-  background-color: var(--var-surface-2);
-  border-radius: 16px;
-  overflow: hidden;
-  border: none;
-  transition: all 0.3s ease;
-  padding: 0;
+.filterActions {
   display: flex;
+  gap: 1rem;
+  margin-left: auto;
+  align-items: flex-end;
+}
+
+.applyButton, .clearButton {
+  padding: 0.9rem 1.25rem;
+  border-radius: 0.75rem;
+  font-weight: 600;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: none;
+}
+
+.applyButton {
+  background: linear-gradient(135deg, var(--var-primary), var(--var-primary-dark));
+  color: white;
+  box-shadow: 0 4px 12px rgba(var(--var-primary-rgb), 0.2);
+}
+
+.clearButton {
+  background-color: transparent;
+  color: var(--var-text-secondary);
+  border: 1px solid rgba(var(--var-divider-rgb), 0.4);
+}
+
+/* Loading state */
+.loadingState {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem 2rem;
+  text-align: center;
+}
+
+.loadingPulse {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: rgba(var(--var-primary-rgb), 0.2);
+  margin-bottom: 1.5rem;
   position: relative;
-  height: 100%;
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(var(--var-divider-rgb), 0.1);
-  animation: cardReveal 0.5s ease forwards;
-  animation-delay: calc(var(--card-index, 0) * 0.1s);
-  opacity: 0;
 }
 
-@keyframes cardReveal {
-  0% {
-    opacity: 0;
-    transform: translateY(15px);
-  }
-  100% {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.courseCard::before {
+.loadingPulse::after {
   content: '';
   position: absolute;
   top: 0;
   left: 0;
-  width: 100%;
-  height: 100%;
-  background: radial-gradient(circle at top right, 
-              rgba(var(--var-primary-rgb), 0.07), 
-              rgba(var(--var-primary-rgb), 0.01) 70%);
-  z-index: 0;
-  opacity: 0.5;
-  transition: opacity 0.4s ease;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(90deg, var(--var-primary), var(--var-secondary));
+  border-radius: 50%;
+  opacity: 0.7;
+  animation: pulse 1.5s ease-in-out infinite;
 }
 
-.courseCard:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 12px 20px rgba(0, 0, 0, 0.12), 0 0 0 1px rgba(var(--var-primary-rgb), 0.08);
-  z-index: 1;
+@keyframes pulse {
+  0% {
+    transform: scale(0.5);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1.5);
+    opacity: 0;
+  }
 }
 
-.courseCard:hover::before {
-  opacity: 0.8;
+.loadingState p {
+  color: var(--var-text-secondary);
+  font-size: 1.1rem;
 }
 
-.cardColorBadge {
-  width: 6px;
-  flex-shrink: 0;
-  position: relative;
+/* Error state */
+.errorState {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem 2rem;
+  text-align: center;
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+.errorIcon {
+  font-size: 2.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.errorState h3 {
+  font-size: 1.4rem;
+  font-weight: 700;
+  margin-bottom: 0.75rem;
+  color: var(--var-text);
+}
+
+.errorState p {
+  color: var(--var-text-secondary);
+  margin-bottom: 1.5rem;
+  line-height: 1.5;
+}
+
+.retryButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.9rem 1.75rem;
+  border-radius: 0.75rem;
+  background: var(--var-primary);
+  color: white;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  border: none;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 12px rgba(var(--var-primary-rgb), 0.25);
+}
+
+/* Empty state */
+.emptyState {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem 2rem;
+  text-align: center;
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+.emptyIcon {
+  font-size: 3rem;
+  margin-bottom: 1.5rem;
+}
+
+.emptyState h3 {
+  font-size: 1.4rem;
+  font-weight: 700;
+  margin-bottom: 0.75rem;
+  color: var(--var-text);
+}
+
+.emptyState p {
+  color: var(--var-text-secondary);
+  margin-bottom: 1.5rem;
+  line-height: 1.5;
+}
+
+.searchNowButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.9rem 1.75rem;
+  border-radius: 0.75rem;
+  background: linear-gradient(135deg, var(--var-primary), var(--var-primary-dark));
+  color: white;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  border: none;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 12px rgba(var(--var-primary-rgb), 0.25);
+}
+
+/* Course grid */
+.courseGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 1.75rem;
+}
+
+/* Course card */
+.courseCard {
+  background-color: var(--var-surface);
+  border-radius: 1.25rem;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.04);
   overflow: hidden;
-  background: linear-gradient(to bottom, var(--var-primary), var(--var-secondary));
-  transition: width 0.3s ease;
+  transition: all 0.3s ease;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid rgba(var(--var-divider-rgb), 0.1);
+  position: relative;
 }
 
-.courseCard:hover .cardColorBadge {
-  width: 8px;
+.cardHeader {
+  display: flex;
+  justify-content: space-between;
+  padding: 1.25rem 1.25rem 0;
+  gap: 0.5rem;
 }
 
-.courseCard:hover .courseTitle {
+.fieldBadge, .levelBadge {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.4rem 0.75rem;
+  border-radius: 2rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.fieldBadge {
+  background-color: rgba(var(--var-primary-rgb), 0.1);
   color: var(--var-primary);
 }
 
-.cardContent {
+.levelBadge {
+  background-color: rgba(var(--var-secondary-rgb), 0.1);
+  color: var(--var-secondary);
+}
+
+.fieldBadge svg, .levelBadge svg {
+  font-size: 0.85rem;
+  opacity: 0.8;
+}
+
+.cardBody {
+  padding: 1.25rem;
+  flex-grow: 1;
   display: flex;
   flex-direction: column;
-  flex: 1;
-  padding: 25px;
-  position: relative;
-  overflow: hidden;
-  z-index: 1;
-  background-image: 
-    linear-gradient(
-      160deg, 
-      rgba(var(--var-primary-rgb), 0.03), 
-      transparent 60%
-    );
-}
-
-.courseCardHeader {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 16px;
-}
-
-.courseField, .courseLevel {
-  font-size: 0.7rem;
-  padding: 6px 14px;
-  border-radius: 20px;
-  font-weight: 600;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  letter-spacing: 0.5px;
-  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.08);
-}
-
-.courseField {
-  background: linear-gradient(to right, var(--var-primary), var(--var-primary-light));
-  color: white;
-}
-
-.courseLevel {
-  background-color: var(--var-surface-2);
-  color: var(--var-text);
-  border: 1px solid rgba(var(--var-divider-rgb), 0.6);
 }
 
 .courseTitle {
-  font-size: 1.25rem;
+  font-size: 1.2rem;
   font-weight: 700;
-  margin: 0 0 16px 0;
+  margin-bottom: 0.75rem;
   color: var(--var-text);
-  line-height: 1.4;
-  position: relative;
-  transition: color 0.3s ease;
+  line-height: 1.3;
+  transition: color 0.2s ease;
 }
 
 .courseDescription {
-  color: var(--var-text-secondary);
   font-size: 0.95rem;
+  color: var(--var-text-secondary);
   line-height: 1.6;
-  margin-bottom: 24px;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
+  margin-bottom: 1.25rem;
+  flex-grow: 1;
 }
 
 .cardFooter {
+  padding: 0 1.25rem 1.25rem;
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-top: auto;
-  padding-top: 16px;
-  border-top: 1px solid rgba(var(--var-divider-rgb), 0.1);
+  flex-direction: column;
+  gap: 1rem;
 }
 
 .courseStats {
   display: flex;
-  gap: 16px;
   flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-bottom: 0.25rem;
 }
 
-.courseStat {
+.statItem {
   display: flex;
   align-items: center;
-  gap: 8px;
-  color: var(--var-text-secondary);
+  gap: 0.375rem;
   font-size: 0.85rem;
-  white-space: nowrap;
-  transition: all 0.3s ease;
+  color: var(--var-text-secondary);
+  padding: 0.4rem 0.75rem;
+  background-color: rgba(var(--var-divider-rgb), 0.1);
+  border-radius: 2rem;
+  transition: all 0.2s ease;
 }
 
-.courseStat:hover {
-  color: var(--var-primary);
+.statItem svg {
+  font-size: 0.85rem;
+  opacity: 0.8;
 }
 
-.courseStat svg {
-  color: var(--var-primary);
-  font-size: 0.95rem;
-  filter: drop-shadow(0 2px 3px rgba(var(--var-primary-rgb), 0.3));
-}
-
-.viewCourseButton {
+.viewButton {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
-  background: linear-gradient(135deg, var(--var-primary), var(--var-primary-light));
+  gap: 0.5rem;
+  padding: 0.85rem;
+  border-radius: 0.75rem;
+  background: linear-gradient(135deg, var(--var-primary), var(--var-primary-dark));
   color: white;
-  border: none;
-  border-radius: 10px;
-  padding: 10px 16px;
   font-weight: 600;
-  font-size: 0.9rem;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  white-space: nowrap;
-  box-shadow: 0 4px 10px rgba(var(--var-primary-rgb), 0.25);
-  position: relative;
-  overflow: hidden;
   text-decoration: none;
+  transition: all 0.2s ease;
   text-align: center;
+  box-shadow: 0 4px 12px rgba(var(--var-primary-rgb), 0.2);
 }
 
-.viewCourseButton:hover,
-.viewCourseButton:focus,
-.viewCourseButton:active {
-  box-shadow: 0 6px 15px rgba(var(--var-primary-rgb), 0.35);
-  transform: translateY(-3px);
-  color: white;
-  text-decoration: none;
-  outline: none;
-}
-
-.viewCourseButton::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, 
-    transparent, 
-    rgba(255, 255, 255, 0.2), 
-    transparent);
-  transition: left 0.7s ease;
-}
-
-.viewCourseButton:hover::before {
-  left: 100%;
-}
-
-.viewCourseButton:active {
-  transform: translateY(-1px);
-  box-shadow: 0 3px 6px rgba(var(--var-primary-rgb), 0.2);
-}
-
-.viewCourseButton svg {
+.viewButton svg {
   font-size: 0.85rem;
-  transition: transform 0.3s ease;
+  transition: transform 0.2s ease;
 }
 
-.viewCourseButton:hover svg {
-  transform: translateX(4px);
+.viewButton:hover svg {
+  transform: translateX(3px);
 }
 
-/* Responsive adjustments */
+/* Media queries */
 @media (max-width: 1200px) {
-  .TrendingCourses {
-    padding: 35px 30px;
+  .coursesSection {
+    padding: 2rem;
   }
   
   .courseGrid {
-    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-    gap: 25px;
-  }
-}
-
-@media (max-width: 1024px) {
-  .TrendingCourses {
-    padding: 30px 25px;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.5rem;
   }
 }
 
 @media (max-width: 768px) {
-  .TrendingCoursesHeader {
+  .container {
+    padding: 1.5rem 1rem 3rem;
+  }
+  
+  .sectionHeader {
     flex-direction: column;
     align-items: flex-start;
+    gap: 1.5rem;
+  }
+  
+  .filterControls {
+    width: 100%;
+  }
+  
+  .filterToggle {
+    width: 100%;
+    justify-content: center;
+  }
+  
+  .filterOptions {
+    flex-direction: column;
+  }
+  
+  .filterActions {
+    width: 100%;
+    margin-top: 0.5rem;
+  }
+  
+  .applyButton, .clearButton {
+    flex: 1;
+    text-align: center;
   }
   
   .courseGrid {
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 20px;
-  }
-  
-  .cardContent {
-    padding: 20px;
-  }
-  
-  .searchButton {
-    padding: 0 25px;
-  }
-  
-  .filtersContainer {
-    width: 100%;
-  }
-  
-  .filters {
-    width: 100%;
-    justify-content: space-between;
-  }
-  
-  .select, .filterButton {
-    flex: 1;
-    text-align: left;
-  }
-  
-  /* Reduce 3D effects on mobile */
-  .courseCard, .courseCard:hover {
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1), 0 0 0 1px rgba(var(--var-divider-rgb), 0.1);
-  }
-  
-  .courseCard:hover {
-    transform: translateY(-3px);
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
   }
 }
 
 @media (max-width: 480px) {
-  .MainContainer {
-    padding: 30px 15px 60px;
+  .coursesSection {
+    padding: 1.5rem 1rem;
+    border-radius: 1rem;
   }
   
-  .hero {
-    margin-bottom: 40px;
-  }
-  
-  .TrendingCourses {
-    padding: 25px 20px;
-    border-radius: 20px;
-  }
-  
-  .filters {
+  .searchWrapper {
     flex-direction: column;
   }
   
-  .searchContainer input {
-    padding: 16px 16px 16px 50px;
+  .searchInput {
+    padding: 1rem 1rem 1rem 3rem;
   }
   
   .searchButton {
-    padding: 0 20px;
-  }
-  
-  .courseCard {
-    border-radius: 14px;
-  }
-  
-  .cardContent {
-    padding: 18px;
-  }
-  
-  .cardFooter {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 14px;
-  }
-  
-  .viewCourseButton {
+    padding: 0.85rem 0;
     width: 100%;
-  }
-  
-  .courseStats {
-    flex-wrap: wrap;
-    width: 100%;
+    border-radius: 0;
   }
 }
 
-/* Accessibility overrides */
+/* Accessibility */
 @media (prefers-reduced-motion: reduce) {
+  .loadingPulse::after,
+  .coursesSection::before,
+  .filterToggle,
   .courseCard,
-  .TrendingCourses::before,
-  .viewCourseButton::before {
+  .viewButton svg,
+  .searchWrapper {
     animation: none;
+    transition: none;
   }
-  
-  .courseCard {
-    opacity: 1;
-  }
-  
-  .filters {
-    animation: none;
-    opacity: 1;
-  }
-  
-  .courseCard:hover,
-  .viewCourseButton:hover,
-  .filterButton:hover,
-  .retryButton:hover,
-  .searchWrapper:focus-within {
-    transform: none;
-  }
-}
-
-.prerequisites {
-  margin-bottom: 25px;
-  background: linear-gradient(120deg, 
-    rgba(var(--var-secondary-rgb), 0.05), 
-    rgba(var(--var-primary-rgb), 0.02));
-  border-radius: 12px;
-  padding: 15px;
-  border: 1px dashed rgba(var(--var-secondary-rgb), 0.15);
-  transition: all 0.3s ease;
-}
-
-.prerequisites:hover {
-  background: linear-gradient(120deg, 
-    rgba(var(--var-secondary-rgb), 0.07), 
-    rgba(var(--var-primary-rgb), 0.03));
-  border-color: rgba(var(--var-secondary-rgb), 0.25);
-  transform: translateY(-2px);
-}
-
-.prerequisites h5 {
-  font-size: 1rem;
-  margin-bottom: 12px;
-  color: var(--var-text);
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-weight: 600;
-}
-
-.prerequisites h5 svg {
-  color: var(--var-secondary);
-  font-size: 0.9rem;
-}
-
-.prerequisites ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-.prerequisites li {
-  font-size: 0.9rem;
-  color: var(--var-text-secondary);
-  line-height: 1.5;
-  display: flex;
-  align-items: flex-start;
-  gap: 8px;
-  padding: 0 0 0 5px;
-  margin-bottom: 5px;
-}
-
-.prerequisites li svg {
-  color: var(--var-secondary);
-  font-size: 0.8rem;
-  margin-top: 3px;
-  flex-shrink: 0;
 } 
