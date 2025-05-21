@@ -4,7 +4,7 @@
 
 > ⚠️ **Note:** This project is currently in development.
 
-## 🎬 Demo
+## 🎬 Demo (Click on image to play)
 
 [![LearnForge Demo](/media/screenshots/homepage.png)](https://youtu.be/DKCuWwpS5XA)
 
