@@ -104,6 +104,13 @@ const LearningPage = () => {
     const contentRef = useRef(null);
     const navigate = useNavigate();
     
+    // Auto-complete tracking
+    const [timeSpentOnPage, setTimeSpentOnPage] = useState(0);
+    const autoCompleteIntervalRef = useRef(null);
+    
+    // Define a constant for auto-complete threshold (in seconds)
+    const AUTO_COMPLETE_THRESHOLD = 120; // 2 minutes
+    
     // Determine if the current section is the first or last
     const isFirstSection = parseInt(sectionId) === 1;
     const isLastSection = course?.learning_path ? 
@@ -119,6 +126,11 @@ const LearningPage = () => {
             if (progressIntervalRef.current) {
                 clearInterval(progressIntervalRef.current);
                 progressIntervalRef.current = null;
+            }
+            
+            if (autoCompleteIntervalRef.current) {
+                clearInterval(autoCompleteIntervalRef.current);
+                autoCompleteIntervalRef.current = null;
             }
         };
     }, []);
@@ -139,8 +151,13 @@ const LearningPage = () => {
                     const isBookmarked = CourseProgressManager.isBookmarked(courseName);
                     setBookmarked(isBookmarked);
                     
-                    // Update last viewed section
-                    CourseProgressManager.updateLastViewed(courseName, parseInt(sectionId));
+                    // Update last viewed section - store the result to ensure it worked
+                    const updatedViewProgress = CourseProgressManager.updateLastViewed(courseName, parseInt(sectionId));
+                    
+                    // If the update failed, log an error but continue loading the course
+                    if (!updatedViewProgress) {
+                        console.error(`Failed to update last viewed section to ${sectionId}`);
+                    }
                 }
                 
                 // Reset active headings
@@ -380,9 +397,17 @@ const LearningPage = () => {
         // Use our progress manager to mark section as completed
         if (!progressData.completed.includes(currentSectionId)) {
             const updatedProgress = CourseProgressManager.markSectionCompleted(courseName, currentSectionId);
-            setProgressData(updatedProgress);
             
-            // Show completion toast or animation here if desired
+            // If the update was successful (not null)
+            if (updatedProgress) {
+                setProgressData(updatedProgress);
+                // Optional: show a success notification to the user
+                console.log(`Section ${currentSectionId} marked as completed!`);
+            } else {
+                console.error(`Failed to mark section ${currentSectionId} as completed`);
+            }
+        } else {
+            console.log(`Section ${currentSectionId} already marked as completed`);
         }
     };
     
@@ -501,6 +526,46 @@ const LearningPage = () => {
             }
         });
     }, [courseName, sectionId]);
+
+    // Setup auto-complete tracking on component mount
+    useEffect(() => {
+        // Only start tracking if the section isn't already completed
+        if (!isSectionCompleted && currentSection && !currentSection.loading) {
+            console.log(`Starting auto-complete tracking for section ${sectionId}`);
+            
+            // Clear any existing interval
+            if (autoCompleteIntervalRef.current) {
+                clearInterval(autoCompleteIntervalRef.current);
+                autoCompleteIntervalRef.current = null;
+            }
+            
+            // Start a new interval to track time spent on page
+            setTimeSpentOnPage(0);
+            autoCompleteIntervalRef.current = setInterval(() => {
+                setTimeSpentOnPage(prev => {
+                    const newTime = prev + 1;
+                    
+                    // If threshold reached, mark as completed and clear interval
+                    if (newTime >= AUTO_COMPLETE_THRESHOLD) {
+                        console.log(`Auto-complete threshold reached (${AUTO_COMPLETE_THRESHOLD}s) for section ${sectionId}`);
+                        markSectionCompleted();
+                        clearInterval(autoCompleteIntervalRef.current);
+                        autoCompleteIntervalRef.current = null;
+                    }
+                    
+                    return newTime;
+                });
+            }, 1000); // Check every second
+        }
+        
+        // Cleanup interval on unmount
+        return () => {
+            if (autoCompleteIntervalRef.current) {
+                clearInterval(autoCompleteIntervalRef.current);
+                autoCompleteIntervalRef.current = null;
+            }
+        };
+    }, [sectionId, isSectionCompleted, currentSection]);
 
     if (loading) {
         return (
@@ -749,7 +814,13 @@ const LearningPage = () => {
                             {!isLastSection ? (
                                 <button 
                                     className={`${styles.navButton} ${styles.nextButton}`}
-                                    onClick={goToNextSection}
+                                    onClick={() => {
+                                        // Mark current section as completed when moving to the next one
+                                        if (!isSectionCompleted) {
+                                            markSectionCompleted();
+                                        }
+                                        goToNextSection();
+                                    }}
                                 >
                                     Next Section <FaArrowRight className={styles.navIcon} />
                                 </button>

@@ -21,11 +21,18 @@ const OPENROUTER_API_KEY = process.env.OPENROUTER_API_KEY;
 const OPENROUTER_API_URL = "https://openrouter.ai/api/v1/chat/completions";
 const OPENROUTER_MODEL = "openai/gpt-3.5-turbo";
 
+// // Model configurations
+// const MODEL_NAMES = {
+//     // PRO: "gemini-2.0-pro-exp-02-05",
+//     PRO: "gemini-2.5-pro-exp-03-25",
+//     FLASH: "gemini-2.0-flash-thinking-exp-01-21"
+// };
+
 // Model configurations
 const MODEL_NAMES = {
     // PRO: "gemini-2.0-pro-exp-02-05",
-    PRO: "gemini-2.5-pro-exp-03-25",
-    FLASH: "gemini-2.0-flash-thinking-exp-01-21"
+    PRO: "gemini-2.5-flash-preview-04-17",
+    FLASH: "gemini-2.0-flash"
 };
 
 // API version

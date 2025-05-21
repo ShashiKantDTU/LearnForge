@@ -8,7 +8,7 @@ import {
     FaChevronDown, FaChevronUp, FaBookOpen, FaCode, FaLightbulb,
     FaRocket, FaMedal, FaArrowRight, FaChartBar, FaCertificate,
     FaRegCalendarAlt, FaUsers, FaShareAlt, FaRegBookmark, FaBookmark,
-    FaTrophy, FaChalkboardTeacher, FaBrain, FaStar
+    FaTrophy, FaChalkboardTeacher, FaBrain, FaStar, FaTrash
 } from 'react-icons/fa';
 import CourseProgressManager from '../../utils/CourseProgressManager';
 
@@ -73,7 +73,21 @@ const CourseDetails = () => {
                     courseName, 
                     courseData.learning_path
                 );
-                setCourseProgress(progressStatus);
+                
+                // Check if progress status is valid before setting
+                if (progressStatus) {
+                    setCourseProgress(progressStatus);
+                } else {
+                    console.error('Failed to get course progress status');
+                    // Set default progress to avoid UI errors
+                    setCourseProgress({
+                        percentage: 0,
+                        completedModules: 0,
+                        totalModules: courseData.learning_path ? courseData.learning_path.length : 0,
+                        estimatedCompletionDays: 0,
+                        sectionsCompleted: []
+                    });
+                }
                 
                 // Load bookmark state
                 setBookmarked(CourseProgressManager.isBookmarked(courseName));
@@ -156,16 +170,40 @@ const CourseDetails = () => {
         alert('Course link copied to clipboard!');
     };
 
-    // Check if section is completed
-    const isSectionCompleted = (sectionId) => {
-        return courseProgress.sectionsCompleted.includes(sectionId);
+    // Get section progress
+    const getSectionProgress = (sectionId) => {
+        // Call getSectionProgress with both courseName and sectionId
+        return CourseProgressManager.getSectionProgress(courseName, sectionId);
     };
 
-    // Calculate section progress
-    const getSectionProgress = (sectionId) => {
-        // For now, we'll use a binary completed/not completed model
-        // Future enhancement could track progress within each section
-        return isSectionCompleted(sectionId) ? 100 : 0;
+    // Check if section is completed
+    const isSectionCompleted = (sectionId) => {
+        // Call isSectionCompleted with both courseName and sectionId
+        return CourseProgressManager.isSectionCompleted(courseName, sectionId);
+    };
+
+    // Reset course progress (for testing/debugging)
+    const resetCourseProgress = () => {
+        const confirmReset = window.confirm(
+            'Are you sure you want to reset your progress for this course? This action cannot be undone.'
+        );
+        
+        if (confirmReset) {
+            const success = CourseProgressManager.clearCourseProgress(courseName);
+            if (success) {
+                // Reset local state to reflect changes
+                setCourseProgress({
+                    percentage: 0,
+                    completedModules: 0,
+                    totalModules: course?.learning_path?.length || 0,
+                    estimatedCompletionDays: 0,
+                    sectionsCompleted: []
+                });
+                alert('Course progress has been reset successfully!');
+            } else {
+                alert('Failed to reset course progress. Please try again.');
+            }
+        }
     };
 
     if (loading) {
@@ -224,6 +262,17 @@ const CourseDetails = () => {
                             <FaShareAlt />
                         </button>
                     </div>
+                    
+                    {/* Only show the reset button in development mode */}
+                    {process.env.NODE_ENV === 'development' && (
+                        <button 
+                            className={`${styles.resetProgressButton}`} 
+                            onClick={resetCourseProgress}
+                            title="Reset course progress (Development only)"
+                        >
+                            <FaTrash /> Reset Progress
+                        </button>
+                    )}
                 </div>
 
                 {course && (

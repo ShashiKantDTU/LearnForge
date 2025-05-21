@@ -132,8 +132,24 @@ const router = express.Router();
  */
 router.post('/generate', async (req, res) => {
     try {
+
+        const experienceLevel = req.body.level;
         const Course_Name = req.body.Course_Name;
         const prompt = req.body.prompt;
+
+        if (experienceLevel) {
+
+            const level = experienceLevel;
+
+            if(level === 'Beginner') {
+                // here we will generate a beginner course
+        }else{
+            // here we will generate a advanced course
+        }
+
+    }
+
+
 
         // Check if prompt is empty 
         if (!prompt && !Course_Name) {
