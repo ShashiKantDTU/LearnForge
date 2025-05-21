@@ -49,7 +49,7 @@ LearnForge/
 │   ├── services/
 │   │   └── aiService.js         # Core AI request logic & retry/key‑rotation
 │   └── utils/
-│       └── userAgentRotator.js  # Prevent duplicate AI calls
+│       └── userAgentRotator.js  # User-Agent randomizer
 ├── Frontend/
 │   ├── public/                  # Static assets & index.html
 │   └── src/
@@ -89,6 +89,7 @@ LearnForge/
    # MONGODB_URI and other environment variables
    npm start
    ```
+   Backend server runs on `http://localhost:3000` by default.
 
 3. **Frontend setup**
 
@@ -98,7 +99,7 @@ LearnForge/
    npm start
    ```
 
-   The React app runs on `http://localhost:3000` by default.
+   The React app runs on `http://localhost:5000` by default.
 
 ### API Key Configuration
 
