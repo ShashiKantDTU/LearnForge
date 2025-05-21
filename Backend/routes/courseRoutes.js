@@ -210,7 +210,8 @@ router.post('/generate', async (req, res) => {
             `;
 
             const learningPathResult = await generateContent(learningPathPrompt, 'PRO');
-            const Step1Data = parseJsonResponse(learningPathResult);
+            // Use the async version of parseJsonResponse with retry capability
+            const Step1Data = await parseJsonResponse(learningPathResult);
             console.log("Learning path generated successfully");
             const course = new Course(Step1Data);
             course.Course_Prompt = prompt;

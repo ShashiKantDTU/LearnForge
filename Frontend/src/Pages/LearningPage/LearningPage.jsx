@@ -36,7 +36,8 @@ const fetchWithRetry = async (url, options, maxRetries = 3, retryDelay = 1000) =
     throw lastError; // If all retries fail, throw the last error
 };
 
-// Sample mock course data
+// This commented mock data is kept for reference but not used in production
+/*
 const mockCourseData = {
     Course_Name: "Python for Data Science",
     Course_Description: "A comprehensive course on using Python for data science, including data manipulation, analysis, and visualization.",
@@ -84,6 +85,7 @@ const mockCourseData = {
         }
     ]
 };
+*/
 
 const LearningPage = () => {
     const { courseName, sectionId = 1 } = useParams();
@@ -183,15 +185,26 @@ const LearningPage = () => {
                     
                     const allCourses = await response.json();
                     
-                    // Find our course by name
-                    const courseData = allCourses.find(c => 
-                        c.Course_Name.toLowerCase().replace(/\s+/g, '-') === courseName.toLowerCase()
-                    );
+                    // Add debugging to help diagnose course name matching issues
+                    console.log(`Searching for course with URL parameter: "${courseName}"`);
+                    console.log(`Available courses:`, allCourses.map(c => ({
+                        name: c.Course_Name,
+                        slug: c.Course_Name.toLowerCase().replace(/\s+/g, '-')
+                    })));
+                    
+                    // Find our course by name with enhanced logging
+                    const courseData = allCourses.find(c => {
+                        const transformedName = c.Course_Name.toLowerCase().replace(/\s+/g, '-');
+                        const isMatch = transformedName === courseName.toLowerCase();
+                        console.log(`Comparing: "${transformedName}" with "${courseName.toLowerCase()}" - Match: ${isMatch}`);
+                        return isMatch;
+                    });
                     
                     if (!courseData) {
                         throw new Error(`Course "${courseName}" not found.`);
                     }
                     
+                    console.log(`Found course: "${courseData.Course_Name}"`);
                     setCourse(courseData);
                     
                     // Find the current section
@@ -210,19 +223,14 @@ const LearningPage = () => {
                 } catch (fetchError) {
                     console.error("API fetch error:", fetchError);
                     
-                    // If API fails, try to use mock data (development only)
-                    console.warn("Falling back to mock data");
-                    setCourse(mockCourseData);
+                    // Provide a proper error message instead of falling back to mock data
+                    const errorMessage = `Unable to load the course "${courseName}". Please check your connection and try again.`;
+                    console.warn(errorMessage);
+                    setError(errorMessage);
                     
-                    const mockSection = mockCourseData.learning_path.find(
-                        s => s.section === parseInt(sectionId)
-                    );
-                    
-                    if (mockSection) {
-                        setCurrentSection(mockSection);
-                    } else {
-                        throw new Error(`Section ${sectionId} not found in mock data.`);
-                    }
+                    // Clear any loading states
+                    setCurrentSection(null);
+                    setCourse(null);
                 } finally {
                     setLoading(false);
                 }

@@ -4,6 +4,63 @@
 
 > ⚠️ **Note:** This project is currently in development.
 
+## 🎬 Demo
+
+[![LearnForge Demo](/media/screenshots/homepage.png)](https://youtu.be/DKCuWwpS5XA)
+
+The video above demonstrates LearnForge in action, including:
+- Course generation with AI
+- Interactive learning paths
+- Progress tracking
+- AI chat assistant
+
+## 📸 Screenshots
+
+<details>
+<summary>Click to expand screenshots</summary>
+
+### Home Page & Course Generation
+![Home Page](media/screenshots/homepage.png)
+*The LearnForge homepage where users can generate new courses on any topic*
+
+![Content Generation](media/screenshots/content_Gen.png)
+*AI-driven course and content generation*
+
+### Course Details View
+![Course Details](media/screenshots/Intropage2.png)
+*Overview of course structure with learning path and estimated completion times*
+
+![Course Introduction](media/screenshots/intropage3.png)
+*Detailed course introduction with key learning objectives and requirements*
+
+### Learning Experience
+![Learning Page](media/screenshots/Learning_Page.png)
+*Interactive learning environment with AI-generated content and progress tracking*
+
+![Additional Learning Features](media/screenshots/anotherpage.png)
+*Enhanced learning experience with interactive components and detailed content*
+
+![Course Navigation](media/screenshots/anotherpage1.png)
+*Intuitive navigation through course sections with progress indicators*
+
+### AI Chat Assistant
+![AI Chat](media/screenshots/AI_Chat.png)
+*Context-aware AI assistant helps answer questions about the current topic*
+
+### Progress Tracking & Bookmarks
+![Bookmarks](media/screenshots/Bookmarks.png)
+*Save and organize your favorite courses for quick access*
+
+### Notifications
+![Notifications](media/screenshots/notifications.png)
+*Stay updated with course completion notifications and alerts*
+
+### Additional Features
+![Footer](media/screenshots/Footer.png)
+*Comprehensive site navigation and information in the footer section*
+
+</details>
+
 ---
 
 ## 🚀 Key Features
@@ -47,17 +104,17 @@ LearnForge/
 │   ├── routes/
 │   │   └── courseRoutes.js     # /generate, /benefits, /topic, /chat, etc.
 │   ├── services/
-│   │   └── aiService.js         # Core AI request logic & retry/key‑rotation
+│   │   └── aiService.js        # Core AI request logic & retry/key‑rotation
 │   └── utils/
-│       └── userAgentRotator.js  # User-Agent randomizer
+│       └── userAgentRotator.js # User-Agent randomizer
 ├── Frontend/
-│   ├── public/                  # Static assets & index.html
+│   ├── public/                 # Static assets & index.html
 │   └── src/
-│       ├── App.jsx              # Entry point & router
+│       ├── App.jsx             # Entry point & router
 │       ├── components/
-│       │   ├── AIChatAssistant/ # Chat UI & context integration
+│       │   ├── AIChatAssistant/# Chat UI & context integration
 │       │   ├── CourseProgressSummary/
-│       │   ├── MarkdownRender/  # Renders AI‑generated MD
+│       │   ├── MarkdownRender/ # Renders AI‑generated MD
 │       │   └── Notifications/
 │       ├── Pages/
 │       │   ├── Home/
@@ -65,7 +122,9 @@ LearnForge/
 │       │   ├── CourseDetails/
 │       │   └── LearningPage/
 │       └── utils/
-│           └── CourseProgressManager.js  # LocalStorage progress logic
+│           └── CourseProgressManager.js # LocalStorage progress logic
+├── media/
+│   └── screenshots/            # Application screenshots
 └── README.md
 ```
 

@@ -152,19 +152,65 @@ const generateContent = async (prompt, modelType = 'PRO', maxRetries = 2) => {
 };
 
 /**
- * Parse JSON from model response with error handling
+ * Parse JSON from model response with error handling and automatic retries
  * @param {Object} response - The model response
+ * @param {number} maxRetries - Maximum number of retries
  * @returns {Object} Parsed JSON object
  */
-const parseJsonResponse = (response) => {
+const parseJsonResponse = async (response, maxRetries = 2) => {
+    let retryCount = 0;
+    let lastError;
+    let originalPrompt = '';
+    
+    // Try to extract the original prompt if available
     try {
-        const text = response.response.text();
-        const cleanJson = text.replace(/```json|```/g, '').trim();
-        return JSON.parse(cleanJson);
-    } catch (error) {
-        console.error('Error parsing JSON response:', error);
-        throw new Error('Failed to parse model response as JSON');
+        if (response.promptFeedback && response.promptFeedback.originalPrompt) {
+            originalPrompt = response.promptFeedback.originalPrompt;
+        }
+    } catch (e) {
+        console.log('Could not extract original prompt for retry');
     }
+    
+    while (retryCount <= maxRetries) {
+        try {
+            console.log(`JSON parsing attempt ${retryCount + 1}/${maxRetries + 1}`);
+            const text = response.response.text();
+            const cleanJson = text.replace(/```json|```/g, '').trim();
+            return JSON.parse(cleanJson);
+        } catch (error) {
+            lastError = error;
+            console.error(`Error parsing JSON response (attempt ${retryCount + 1}/${maxRetries + 1}):`, error.message);
+            
+            // If we have retries left, get a new response using the same prompt
+            if (retryCount < maxRetries) {
+                console.log(`Retrying content generation (attempt ${retryCount + 1})...`);
+                
+                try {
+                    // Use the same prompt but with a specific instruction about providing valid JSON
+                    const retryPrompt = originalPrompt || 
+                        "Please regenerate the previous response as valid, properly formatted JSON. " +
+                        "Ensure all brackets, quotes, and commas are correctly placed.";
+                    
+                    // Generate new content with the same original prompt
+                    response = await generateContent(retryPrompt, 'PRO');
+                    console.log(`New response generated for retry ${retryCount + 1}`);
+                } catch (genError) {
+                    console.error(`Error regenerating content for retry:`, genError.message);
+                }
+            }
+            
+            retryCount++;
+            
+            if (retryCount <= maxRetries) {
+                // Short delay between retries
+                await new Promise(resolve => setTimeout(resolve, 1000));
+            }
+        }
+    }
+    
+    // If all retries fail, throw the error
+    console.error('All JSON parsing attempts failed after retries');
+    throw new Error(`Failed to parse model response as JSON: ${lastError.message}`);
 };
 
 export {
